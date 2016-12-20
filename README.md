@@ -50,10 +50,10 @@ The scripts involved in this project include the following:
 
 This app will consist of a single screen. In addition, it will have links to its Github repo, the About modal, and my LinkedIn. Each player will be given a grid and asked to arrange their ships on it when the game begins. Once both players have arranged their ships, two grids will be rendered, one for each player. These represent the original grids that the players placed their ships on, except that the ships are hidden. Squares on the grid will be updated, changing color as the spaces are attacked. The color is dependent on whether or not a ship part is located at that position.
 
-Ship Set-Up
+Ship Set-Up__
 ![wireframes](battleship-setup.png)
 
-In-Game Board
+In-Game Board__
 ![wireframes](battleship-ingame.png)
 
 ### Implementation Timeline
