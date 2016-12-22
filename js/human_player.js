@@ -5,3 +5,5 @@ class HumanPlayer {
     this.name = name;
   }
 }
+
+module.exports = HumanPlayer;

@@ -26,6 +26,13 @@ class Board {
     );
   }
 
+  registerShip(pos) {
+    this.grid[pos[0]][pos[1]] = SHIP_PART;
+    console.log('Ship registered at ' + pos);
+  }
+
+  
+
   generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
     return new Ship(endpoints[0], endpoints[1]);
   }

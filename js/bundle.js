@@ -87,18 +87,23 @@
 	  }
 	
 	  _createClass(Game, [{
+	    key: 'registerShip',
+	    value: function registerShip(pos) {
+	      this.board.registerShip(pos);
+	    }
+	  }, {
 	    key: 'run',
 	    value: function run() {
-	      var carrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
-	      var battleshipEndpoints = this.player1.promptShipPlacement('battleship');
-	      var cruiserEndpoints = this.player1.promptShipPlacement('cruiser');
-	      var submarineEndpoints = this.player1.promptShipPlacement('submarine');
-	      var destroyerEndpoints = this.player1.promptShipPlacement('destroyer');
-	      this.board.generateShip(carrierEndpoints);
-	      this.board.generateShip(battleshipEndpoints);
-	      this.board.generateShip(cruiserEndpoints);
-	      this.board.generateShip(submarineEndpoints);
-	      this.board.generateShip(destroyerEndpoints);
+	      var p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
+	      var p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
+	      var p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
+	      var p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
+	      var p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
+	      this.board.generateShip(p1CarrierEndpoints);
+	      this.board.generateShip(p1BattleshipEndpoints);
+	      this.board.generateShip(p1CruiserEndpoints);
+	      this.board.generateShip(p1SubmarineEndpoints);
+	      this.board.generateShip(p1DestroyerEndpoints);
 	    }
 	  }]);
 	
@@ -127,12 +132,28 @@
 	    this.$el = $el;
 	
 	    this.setupBoard();
-	    this.bindEvents();
+	    this.setupEvents();
 	  }
 	
 	  _createClass(BattleshipView, [{
-	    key: 'bindEvents',
-	    value: function bindEvents() {
+	    key: 'setupEvents',
+	    value: function setupEvents() {
+	      var _this = this;
+	
+	      var $periodicTable = this.$el.find('.periodic-table');
+	      var $columns = $periodicTable.find('div');
+	      var $elements = $columns.find('div');
+	
+	      $elements.on('click', function (event) {
+	        var $element = $(event.currentTarget);
+	        $element.addClass('ship-part');
+	        $element.attr('style', 'background: black');
+	        _this.game.registerShip($element.data('pos'));
+	      });
+	    }
+	  }, {
+	    key: 'gameEvents',
+	    value: function gameEvents() {
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
@@ -224,6 +245,12 @@
 	  }
 	
 	  _createClass(Board, [{
+	    key: 'registerShip',
+	    value: function registerShip(pos) {
+	      this.grid[pos[0]][pos[1]] = SHIP_PART;
+	      console.log('Ship registered at ' + pos);
+	    }
+	  }, {
 	    key: 'generateShip',
 	    value: function generateShip(endpoints) {
 	      // endpoints is a 2D array of the form [headPos, tailPos]
@@ -309,6 +336,8 @@
 	
 	  this.name = name;
 	};
+	
+	module.exports = HumanPlayer;
 
 /***/ }
 /******/ ]);

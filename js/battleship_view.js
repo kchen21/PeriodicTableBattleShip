@@ -17,10 +17,23 @@ class BattleshipView {
     this.$el = $el;
 
     this.setupBoard();
-    this.bindEvents();
+    this.setupEvents();
   }
 
-  bindEvents() {
+  setupEvents() {
+    const $periodicTable = this.$el.find('.periodic-table');
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
+
+    $elements.on('click', (event) => {
+      const $element = $(event.currentTarget);
+      $element.addClass('ship-part');
+      $element.attr('style', 'background: black');
+      this.game.registerShip($element.data('pos'));
+    });
+  }
+
+  gameEvents() {
     const $periodicTable = this.$el.find('.periodic-table');
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');

@@ -16,17 +16,21 @@ class Game {
     this.player2 = new HumanPlayer(name2);
   }
 
+  registerShip(pos) {
+    this.board.registerShip(pos);
+  }
+
   run() {
-    const carrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
-    const battleshipEndpoints = this.player1.promptShipPlacement('battleship');
-    const cruiserEndpoints = this.player1.promptShipPlacement('cruiser');
-    const submarineEndpoints = this.player1.promptShipPlacement('submarine');
-    const destroyerEndpoints = this.player1.promptShipPlacement('destroyer');
-    this.board.generateShip(carrierEndpoints);
-    this.board.generateShip(battleshipEndpoints);
-    this.board.generateShip(cruiserEndpoints);
-    this.board.generateShip(submarineEndpoints);
-    this.board.generateShip(destroyerEndpoints);
+    const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
+    const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
+    const p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
+    const p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
+    const p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
+    this.board.generateShip(p1CarrierEndpoints);
+    this.board.generateShip(p1BattleshipEndpoints);
+    this.board.generateShip(p1CruiserEndpoints);
+    this.board.generateShip(p1SubmarineEndpoints);
+    this.board.generateShip(p1DestroyerEndpoints);
 
   }
 }
