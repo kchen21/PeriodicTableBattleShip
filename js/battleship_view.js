@@ -17,7 +17,7 @@ class BattleshipView {
     this.$el = $el;
 
     this.setupBoard();
-    this.setupEvents();
+    this.gameEvents();
   }
 
   setupEvents() {
@@ -30,6 +30,7 @@ class BattleshipView {
       $element.addClass('ship-part');
       $element.attr('style', 'background: black');
       this.game.registerShip($element.data('pos'));
+      this.game.shipCount += 1;
     });
   }
 
@@ -39,17 +40,34 @@ class BattleshipView {
     const $elements = $columns.find('div');
 
     $elements.on('click', (event) => {
-      if (event.currentTarget.innerHTML === "-") {
+      const $element = $(event.currentTarget);
+      if ($element.html() === "-") {
         alert("Invalid target");
       } else {
-        alert("Valid target");
+        if ($element.hasClass('ship-part')) {
+          $element.attr('style', 'background: green');
+          this.game.registerHit($element.data('pos'));
+          this.game.shipCount -= 1;
+        } else {
+          $element.attr('style', 'background: red');
+          console.log('You missed!');
+        }
       }
     });
   }
 
-  makeMove($square) {}
+  hideShips() {
+    const $periodicTable = this.$el.find('.periodic-table');
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
+
+    $elements.each( () => {
+      $(this).attr('style', 'background: blue');
+    });
+  }
 
   setupPeriodicTable(name) {
+    this.$el.append(`<h2>${name}'s Fleet<h2>`);
     this.$el.append(`<div id="periodic-table-${name}" class="periodic-table"></div>`);
     const $periodicTable = this.$el.find(`#periodic-table-${name}`);
     $periodicTable.append('<div class="column-0"></div>');

@@ -8,8 +8,9 @@ const Ship = require('./ship.js');
 //   destroyer: 2
 // }
 
-const SHIP_PART = Symbol('part');
-const EMPTY_SPACE = Symbol('space');
+const SHIP_PART = Symbol('shipPart');
+const EMPTY_SQUARE = Symbol('emptySquare');
+const DAMAGED_PART = Symbol('damagedPart');
 
 class Board {
   constructor() {
@@ -31,41 +32,54 @@ class Board {
     console.log('Ship registered at ' + pos);
   }
 
-  
-
-  generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
-    return new Ship(endpoints[0], endpoints[1]);
-  }
-
-  populateGrid(ships) { // ships is an array of ship objects
+  populateGrid() {
     for (let xCoord = 0; xCoord < 9; xCoord++) {
       for (let yCoord = 0; yCoord < 18; yCoord++) {
-        this.grid[xCoord][yCoord] = EMPTY_SPACE;
+        if (this.grid[xCoord][yCoord] !== SHIP_PART) {
+          this.grid[xCoord][yCoord] = EMPTY_SQUARE;
+        }
       }
     }
-
-    ships.forEach( (ship) => {
-      if (ship.headPos[0] === ship.tailPos[0]) { // if the head and tail are in the same row
-        for (let yCoord = ship.headPos[1]; yCoord <= ship.tailPos[1]; yCoord++) { // assumes the y-coordinate of the head is less than that of the tail
-          this.grid[ship.headPos[0]][yCoord] = SHIP_PART;
-        }
-      } else if (ship.headPos[1] === ship.tailPos[1]) { // if the head and tail are in the same column
-        for (let xCoord = ship.headPos[0]; xCoord <= ship.tailPPos[0]; xCoord++) { // assumes the x-coordinate of the head is less than that of the tail
-          this.grid[xCoord][ship.headPos[1]] = SHIP_PART;
-        }
-      } else {
-        console.log('Invalid ship headPos/tailPos combination provided');
-      }
-    });
   }
 
-  inRange(pos) {
-    if (pos[0] > 8 || pos[1] > 17) {
-      return false;
-    }
-
-    return true;
+  registerHit(pos) {
+    this.grid[pos[0]][pos[1]] = DAMAGED_PART;
+    console.log('Ship part at ' + pos + ' has been hit!');
   }
+
+  // generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
+  //   return new Ship(endpoints[0], endpoints[1]);
+  // }
+  //
+  // populateGrid(ships) { // ships is an array of ship objects
+  //   for (let xCoord = 0; xCoord < 9; xCoord++) {
+  //     for (let yCoord = 0; yCoord < 18; yCoord++) {
+  //       this.grid[xCoord][yCoord] = EMPTY_SPACE;
+  //     }
+  //   }
+  //
+  //   ships.forEach( (ship) => {
+  //     if (ship.headPos[0] === ship.tailPos[0]) { // if the head and tail are in the same row
+  //       for (let yCoord = ship.headPos[1]; yCoord <= ship.tailPos[1]; yCoord++) { // assumes the y-coordinate of the head is less than that of the tail
+  //         this.grid[ship.headPos[0]][yCoord] = SHIP_PART;
+  //       }
+  //     } else if (ship.headPos[1] === ship.tailPos[1]) { // if the head and tail are in the same column
+  //       for (let xCoord = ship.headPos[0]; xCoord <= ship.tailPPos[0]; xCoord++) { // assumes the x-coordinate of the head is less than that of the tail
+  //         this.grid[xCoord][ship.headPos[1]] = SHIP_PART;
+  //       }
+  //     } else {
+  //       console.log('Invalid ship headPos/tailPos combination provided');
+  //     }
+  //   });
+  // }
+  //
+  // inRange(pos) {
+  //   if (pos[0] > 8 || pos[1] > 17) {
+  //     return false;
+  //   }
+  //
+  //   return true;
+  // }
 }
 
 module.exports = Board;

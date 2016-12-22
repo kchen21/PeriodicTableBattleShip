@@ -83,7 +83,7 @@
 	
 	    this.board = new Board();
 	    this.player1 = new HumanPlayer(name1);
-	    this.player2 = new HumanPlayer(name2);
+	    this.shipCount = 0;
 	  }
 	
 	  _createClass(Game, [{
@@ -92,19 +92,24 @@
 	      this.board.registerShip(pos);
 	    }
 	  }, {
-	    key: 'run',
-	    value: function run() {
-	      var p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
-	      var p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
-	      var p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
-	      var p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
-	      var p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
-	      this.board.generateShip(p1CarrierEndpoints);
-	      this.board.generateShip(p1BattleshipEndpoints);
-	      this.board.generateShip(p1CruiserEndpoints);
-	      this.board.generateShip(p1SubmarineEndpoints);
-	      this.board.generateShip(p1DestroyerEndpoints);
+	    key: 'registerHit',
+	    value: function registerHit(pos) {
+	      this.board.registerHit(pos);
 	    }
+	    // run() {
+	    //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
+	    //   const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
+	    //   const p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
+	    //   const p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
+	    //   const p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
+	    //   this.board.generateShip(p1CarrierEndpoints);
+	    //   this.board.generateShip(p1BattleshipEndpoints);
+	    //   this.board.generateShip(p1CruiserEndpoints);
+	    //   this.board.generateShip(p1SubmarineEndpoints);
+	    //   this.board.generateShip(p1DestroyerEndpoints);
+	    //
+	    // }
+	
 	  }]);
 	
 	  return Game;
@@ -132,7 +137,7 @@
 	    this.$el = $el;
 	
 	    this.setupBoard();
-	    this.setupEvents();
+	    this.gameEvents();
 	  }
 	
 	  _createClass(BattleshipView, [{
@@ -149,29 +154,51 @@
 	        $element.addClass('ship-part');
 	        $element.attr('style', 'background: black');
 	        _this.game.registerShip($element.data('pos'));
+	        _this.game.shipCount += 1;
 	      });
 	    }
 	  }, {
 	    key: 'gameEvents',
 	    value: function gameEvents() {
+	      var _this2 = this;
+	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
 	      $elements.on('click', function (event) {
-	        if (event.currentTarget.innerHTML === "-") {
+	        var $element = $(event.currentTarget);
+	        if ($element.html() === "-") {
 	          alert("Invalid target");
 	        } else {
-	          alert("Valid target");
+	          if ($element.hasClass('ship-part')) {
+	            $element.attr('style', 'background: green');
+	            _this2.game.registerHit($element.data('pos'));
+	            _this2.game.shipCount -= 1;
+	          } else {
+	            $element.attr('style', 'background: red');
+	            console.log('You missed!');
+	          }
 	        }
 	      });
 	    }
 	  }, {
-	    key: 'makeMove',
-	    value: function makeMove($square) {}
+	    key: 'hideShips',
+	    value: function hideShips() {
+	      var _this3 = this;
+	
+	      var $periodicTable = this.$el.find('.periodic-table');
+	      var $columns = $periodicTable.find('div');
+	      var $elements = $columns.find('div');
+	
+	      $elements.each(function () {
+	        $(_this3).attr('style', 'background: blue');
+	      });
+	    }
 	  }, {
 	    key: 'setupPeriodicTable',
 	    value: function setupPeriodicTable(name) {
+	      this.$el.append('<h2>' + name + '\'s Fleet<h2>');
 	      this.$el.append('<div id="periodic-table-' + name + '" class="periodic-table"></div>');
 	      var $periodicTable = this.$el.find('#periodic-table-' + name);
 	      $periodicTable.append('<div class="column-0"></div>');
@@ -234,8 +261,9 @@
 	//   destroyer: 2
 	// }
 	
-	var SHIP_PART = Symbol('part');
-	var EMPTY_SPACE = Symbol('space');
+	var SHIP_PART = Symbol('shipPart');
+	var EMPTY_SQUARE = Symbol('emptySquare');
+	var DAMAGED_PART = Symbol('damagedPart');
 	
 	var Board = function () {
 	  function Board() {
@@ -251,50 +279,57 @@
 	      console.log('Ship registered at ' + pos);
 	    }
 	  }, {
-	    key: 'generateShip',
-	    value: function generateShip(endpoints) {
-	      // endpoints is a 2D array of the form [headPos, tailPos]
-	      return new Ship(endpoints[0], endpoints[1]);
-	    }
-	  }, {
 	    key: 'populateGrid',
-	    value: function populateGrid(ships) {
-	      var _this = this;
-	
-	      // ships is an array of ship objects
+	    value: function populateGrid() {
 	      for (var xCoord = 0; xCoord < 9; xCoord++) {
 	        for (var yCoord = 0; yCoord < 18; yCoord++) {
-	          this.grid[xCoord][yCoord] = EMPTY_SPACE;
+	          if (this.grid[xCoord][yCoord] !== SHIP_PART) {
+	            this.grid[xCoord][yCoord] = EMPTY_SQUARE;
+	          }
 	        }
 	      }
-	
-	      ships.forEach(function (ship) {
-	        if (ship.headPos[0] === ship.tailPos[0]) {
-	          // if the head and tail are in the same row
-	          for (var _yCoord = ship.headPos[1]; _yCoord <= ship.tailPos[1]; _yCoord++) {
-	            // assumes the y-coordinate of the head is less than that of the tail
-	            _this.grid[ship.headPos[0]][_yCoord] = SHIP_PART;
-	          }
-	        } else if (ship.headPos[1] === ship.tailPos[1]) {
-	          // if the head and tail are in the same column
-	          for (var _xCoord = ship.headPos[0]; _xCoord <= ship.tailPPos[0]; _xCoord++) {
-	            // assumes the x-coordinate of the head is less than that of the tail
-	            _this.grid[_xCoord][ship.headPos[1]] = SHIP_PART;
-	          }
-	        } else {
-	          console.log('Invalid ship headPos/tailPos combination provided');
-	        }
-	      });
 	    }
 	  }, {
-	    key: 'inRange',
-	    value: function inRange(pos) {
-	      if (pos[0] > 8 || pos[1] > 17) {
-	        return false;
-	      }
-	
-	      return true;
+	    key: 'registerHit',
+	    value: function registerHit(pos) {
+	      this.grid[pos[0]][pos[1]] = DAMAGED_PART;
+	      console.log('Ship part at ' + pos + ' has been hit!');
 	    }
+	
+	    // generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
+	    //   return new Ship(endpoints[0], endpoints[1]);
+	    // }
+	    //
+	    // populateGrid(ships) { // ships is an array of ship objects
+	    //   for (let xCoord = 0; xCoord < 9; xCoord++) {
+	    //     for (let yCoord = 0; yCoord < 18; yCoord++) {
+	    //       this.grid[xCoord][yCoord] = EMPTY_SPACE;
+	    //     }
+	    //   }
+	    //
+	    //   ships.forEach( (ship) => {
+	    //     if (ship.headPos[0] === ship.tailPos[0]) { // if the head and tail are in the same row
+	    //       for (let yCoord = ship.headPos[1]; yCoord <= ship.tailPos[1]; yCoord++) { // assumes the y-coordinate of the head is less than that of the tail
+	    //         this.grid[ship.headPos[0]][yCoord] = SHIP_PART;
+	    //       }
+	    //     } else if (ship.headPos[1] === ship.tailPos[1]) { // if the head and tail are in the same column
+	    //       for (let xCoord = ship.headPos[0]; xCoord <= ship.tailPPos[0]; xCoord++) { // assumes the x-coordinate of the head is less than that of the tail
+	    //         this.grid[xCoord][ship.headPos[1]] = SHIP_PART;
+	    //       }
+	    //     } else {
+	    //       console.log('Invalid ship headPos/tailPos combination provided');
+	    //     }
+	    //   });
+	    // }
+	    //
+	    // inRange(pos) {
+	    //   if (pos[0] > 8 || pos[1] > 17) {
+	    //     return false;
+	    //   }
+	    //
+	    //   return true;
+	    // }
+	
 	  }]);
 	
 	  return Board;
