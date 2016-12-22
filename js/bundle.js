@@ -95,7 +95,19 @@
 	
 	  _createClass(BattleshipView, [{
 	    key: 'bindEvents',
-	    value: function bindEvents() {}
+	    value: function bindEvents() {
+	      var periodicTable = this.$el.find('.periodic-table');
+	      var columns = periodicTable.find('div');
+	      var elements = columns.find('div');
+	
+	      elements.on('click', function (event) {
+	        if (event.currentTarget.innerHTML === "-") {
+	          alert("Invalid target");
+	        } else {
+	          alert("Valid target");
+	        }
+	      });
+	    }
 	  }, {
 	    key: 'makeMove',
 	    value: function makeMove($square) {}
@@ -125,7 +137,7 @@
 	
 	      periodicTableElements.forEach(function (el, idx) {
 	        var column = periodicTable.find('.column-' + idx % 18);
-	        column.append('<div>' + el + '</div>');
+	        column.append('<div >' + el + '</div>');
 	      });
 	    }
 	  }, {

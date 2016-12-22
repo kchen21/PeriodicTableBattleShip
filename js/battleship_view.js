@@ -20,7 +20,19 @@ class BattleshipView {
     this.bindEvents();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    const periodicTable = this.$el.find('.periodic-table');
+    const columns = periodicTable.find('div');
+    const elements = columns.find('div');
+
+    elements.on('click', (event) => {
+      if (event.currentTarget.innerHTML === "-") {
+        alert("Invalid target");
+      } else {
+        alert("Valid target");
+      }
+    });
+  }
 
   makeMove($square) {}
 
@@ -48,7 +60,7 @@ class BattleshipView {
 
     periodicTableElements.forEach( (el, idx) => {
       const column = periodicTable.find(`.column-${idx % 18}`);
-      column.append(`<div>${el}</div>`);
+      column.append(`<div >${el}</div>`);
     });
   }
 
