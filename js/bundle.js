@@ -137,7 +137,9 @@
 	
 	      periodicTableElements.forEach(function (el, idx) {
 	        var $column = $periodicTable.find('.column-' + idx % 18);
-	        $column.append('<div >' + el + '</div>');
+	        var $element = $('<div>' + el + '</div>');
+	        $element.data('pos', [Math.floor(idx / 18), idx % 18]);
+	        $column.append($element);
 	      });
 	    }
 	  }, {

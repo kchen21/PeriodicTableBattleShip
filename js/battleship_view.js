@@ -60,7 +60,9 @@ class BattleshipView {
 
     periodicTableElements.forEach( (el, idx) => {
       const $column = $periodicTable.find(`.column-${idx % 18}`);
-      $column.append(`<div >${el}</div>`);
+      let $element = $(`<div>${el}</div>`);
+      $element.data('pos', [Math.floor(idx / 18), (idx % 18)]);
+      $column.append($element);
     });
   }
 
