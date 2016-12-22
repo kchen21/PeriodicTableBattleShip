@@ -1,4 +1,4 @@
-const periodicTableElements = [
+const PERIODIC_TABLE_ELEMENTS = [
   'H','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','He',
   'Li','Be','-','-','-','-','-','-','-','-','-','-','B','C','N','O','F','Ne',
   'Na','Mg','-','-','-','-','-','-','-','-','-','-','Al','Si','P','S','Cl','Ar',
@@ -58,7 +58,7 @@ class BattleshipView {
     $periodicTable.append('<div class="column-16"></div>');
     $periodicTable.append('<div class="column-17"></div>');
 
-    periodicTableElements.forEach( (el, idx) => {
+    PERIODIC_TABLE_ELEMENTS.forEach( (el, idx) => {
       const $column = $periodicTable.find(`.column-${idx % 18}`);
       let $element = $(`<div>${el}</div>`);
       $element.data('pos', [Math.floor(idx / 18), (idx % 18)]);
