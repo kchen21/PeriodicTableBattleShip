@@ -58,15 +58,52 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Game = function Game() {
-	  _classCallCheck(this, Game);
-	};
+	var Board = __webpack_require__(4);
+	var HumanPlayer = __webpack_require__(6);
+	
+	// ships = {
+	//   carrier: 5,
+	//   battleship: 4,
+	//   cruiser: 3,
+	//   submarine: 3,
+	//   destroyer: 2
+	// }
+	
+	var Game = function () {
+	  function Game(name1, name2) {
+	    _classCallCheck(this, Game);
+	
+	    this.board = new Board();
+	    this.player1 = new HumanPlayer(name1);
+	    this.player2 = new HumanPlayer(name2);
+	  }
+	
+	  _createClass(Game, [{
+	    key: 'run',
+	    value: function run() {
+	      var carrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
+	      var battleshipEndpoints = this.player1.promptShipPlacement('battleship');
+	      var cruiserEndpoints = this.player1.promptShipPlacement('cruiser');
+	      var submarineEndpoints = this.player1.promptShipPlacement('submarine');
+	      var destroyerEndpoints = this.player1.promptShipPlacement('destroyer');
+	      this.board.generateShip(carrierEndpoints);
+	      this.board.generateShip(battleshipEndpoints);
+	      this.board.generateShip(cruiserEndpoints);
+	      this.board.generateShip(submarineEndpoints);
+	      this.board.generateShip(destroyerEndpoints);
+	    }
+	  }]);
+	
+	  return Game;
+	}();
 	
 	module.exports = Game;
 
@@ -154,6 +191,124 @@
 	}();
 	
 	module.exports = BattleshipView;
+
+/***/ },
+/* 3 */,
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Ship = __webpack_require__(5);
+	
+	// ships = {
+	//   carrier: 5,
+	//   battleship: 4,
+	//   cruiser: 3,
+	//   submarine: 3,
+	//   destroyer: 2
+	// }
+	
+	var SHIP_PART = Symbol('part');
+	var EMPTY_SPACE = Symbol('space');
+	
+	var Board = function () {
+	  function Board() {
+	    _classCallCheck(this, Board);
+	
+	    this.grid = new Array(new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18));
+	  }
+	
+	  _createClass(Board, [{
+	    key: 'generateShip',
+	    value: function generateShip(endpoints) {
+	      // endpoints is a 2D array of the form [headPos, tailPos]
+	      return new Ship(endpoints[0], endpoints[1]);
+	    }
+	  }, {
+	    key: 'populateGrid',
+	    value: function populateGrid(ships) {
+	      var _this = this;
+	
+	      // ships is an array of ship objects
+	      for (var xCoord = 0; xCoord < 9; xCoord++) {
+	        for (var yCoord = 0; yCoord < 18; yCoord++) {
+	          this.grid[xCoord][yCoord] = EMPTY_SPACE;
+	        }
+	      }
+	
+	      ships.forEach(function (ship) {
+	        if (ship.headPos[0] === ship.tailPos[0]) {
+	          // if the head and tail are in the same row
+	          for (var _yCoord = ship.headPos[1]; _yCoord <= ship.tailPos[1]; _yCoord++) {
+	            // assumes the y-coordinate of the head is less than that of the tail
+	            _this.grid[ship.headPos[0]][_yCoord] = SHIP_PART;
+	          }
+	        } else if (ship.headPos[1] === ship.tailPos[1]) {
+	          // if the head and tail are in the same column
+	          for (var _xCoord = ship.headPos[0]; _xCoord <= ship.tailPPos[0]; _xCoord++) {
+	            // assumes the x-coordinate of the head is less than that of the tail
+	            _this.grid[_xCoord][ship.headPos[1]] = SHIP_PART;
+	          }
+	        } else {
+	          console.log('Invalid ship headPos/tailPos combination provided');
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'inRange',
+	    value: function inRange(pos) {
+	      if (pos[0] > 8 || pos[1] > 17) {
+	        return false;
+	      }
+	
+	      return true;
+	    }
+	  }]);
+	
+	  return Board;
+	}();
+	
+	module.exports = Board;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Ship =
+	// Create a ship with a head position headPos and a tail pos of tailPos
+	function Ship(headPos, tailPos) {
+	  _classCallCheck(this, Ship);
+	
+	  this.headPos = headPos;
+	  this.tailPos = tailPos;
+	};
+	
+	module.exports = Ship;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Board = __webpack_require__(4);
+	
+	var HumanPlayer = function HumanPlayer(name) {
+	  _classCallCheck(this, HumanPlayer);
+	
+	  this.name = name;
+	};
 
 /***/ }
 /******/ ]);

@@ -26,8 +26,8 @@ class Board {
     );
   }
 
-  generateShip(headPos, tailPos) {
-    return new Ship(headPos, tailPos);
+  generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
+    return new Ship(endpoints[0], endpoints[1]);
   }
 
   populateGrid(ships) { // ships is an array of ship objects
@@ -60,3 +60,5 @@ class Board {
     return true;
   }
 }
+
+module.exports = Board;
