@@ -96,11 +96,11 @@
 	  _createClass(BattleshipView, [{
 	    key: 'bindEvents',
 	    value: function bindEvents() {
-	      var periodicTable = this.$el.find('.periodic-table');
-	      var columns = periodicTable.find('div');
-	      var elements = columns.find('div');
+	      var $periodicTable = this.$el.find('.periodic-table');
+	      var $columns = $periodicTable.find('div');
+	      var $elements = $columns.find('div');
 	
-	      elements.on('click', function (event) {
+	      $elements.on('click', function (event) {
 	        if (event.currentTarget.innerHTML === "-") {
 	          alert("Invalid target");
 	        } else {
@@ -113,37 +113,38 @@
 	    value: function makeMove($square) {}
 	  }, {
 	    key: 'setupPeriodicTable',
-	    value: function setupPeriodicTable() {
-	      this.$el.append('<div class="periodic-table"></div>');
-	      var periodicTable = this.$el.find('.periodic-table');
-	      periodicTable.append('<div class="column-0"></div>');
-	      periodicTable.append('<div class="column-1"></div>');
-	      periodicTable.append('<div class="column-2"></div>');
-	      periodicTable.append('<div class="column-3"></div>');
-	      periodicTable.append('<div class="column-4"></div>');
-	      periodicTable.append('<div class="column-5"></div>');
-	      periodicTable.append('<div class="column-6"></div>');
-	      periodicTable.append('<div class="column-7"></div>');
-	      periodicTable.append('<div class="column-8"></div>');
-	      periodicTable.append('<div class="column-9"></div>');
-	      periodicTable.append('<div class="column-10"></div>');
-	      periodicTable.append('<div class="column-11"></div>');
-	      periodicTable.append('<div class="column-12"></div>');
-	      periodicTable.append('<div class="column-12"></div>');
-	      periodicTable.append('<div class="column-14"></div>');
-	      periodicTable.append('<div class="column-15"></div>');
-	      periodicTable.append('<div class="column-16"></div>');
-	      periodicTable.append('<div class="column-17"></div>');
+	    value: function setupPeriodicTable(name) {
+	      this.$el.append('<div id="periodic-table-' + name + '" class="periodic-table"></div>');
+	      var $periodicTable = this.$el.find('#periodic-table-' + name);
+	      $periodicTable.append('<div class="column-0"></div>');
+	      $periodicTable.append('<div class="column-1"></div>');
+	      $periodicTable.append('<div class="column-2"></div>');
+	      $periodicTable.append('<div class="column-3"></div>');
+	      $periodicTable.append('<div class="column-4"></div>');
+	      $periodicTable.append('<div class="column-5"></div>');
+	      $periodicTable.append('<div class="column-6"></div>');
+	      $periodicTable.append('<div class="column-7"></div>');
+	      $periodicTable.append('<div class="column-8"></div>');
+	      $periodicTable.append('<div class="column-9"></div>');
+	      $periodicTable.append('<div class="column-10"></div>');
+	      $periodicTable.append('<div class="column-11"></div>');
+	      $periodicTable.append('<div class="column-12"></div>');
+	      $periodicTable.append('<div class="column-12"></div>');
+	      $periodicTable.append('<div class="column-14"></div>');
+	      $periodicTable.append('<div class="column-15"></div>');
+	      $periodicTable.append('<div class="column-16"></div>');
+	      $periodicTable.append('<div class="column-17"></div>');
 	
 	      periodicTableElements.forEach(function (el, idx) {
-	        var column = periodicTable.find('.column-' + idx % 18);
-	        column.append('<div >' + el + '</div>');
+	        var $column = $periodicTable.find('.column-' + idx % 18);
+	        $column.append('<div >' + el + '</div>');
 	      });
 	    }
 	  }, {
 	    key: 'setupBoard',
 	    value: function setupBoard() {
-	      this.setupPeriodicTable();
+	      this.setupPeriodicTable("Marvel");
+	      this.setupPeriodicTable("Capcom");
 	    }
 	  }]);
 	

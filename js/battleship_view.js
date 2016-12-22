@@ -21,11 +21,11 @@ class BattleshipView {
   }
 
   bindEvents() {
-    const periodicTable = this.$el.find('.periodic-table');
-    const columns = periodicTable.find('div');
-    const elements = columns.find('div');
+    const $periodicTable = this.$el.find('.periodic-table');
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
 
-    elements.on('click', (event) => {
+    $elements.on('click', (event) => {
       if (event.currentTarget.innerHTML === "-") {
         alert("Invalid target");
       } else {
@@ -36,36 +36,37 @@ class BattleshipView {
 
   makeMove($square) {}
 
-  setupPeriodicTable() {
-    this.$el.append('<div class="periodic-table"></div>');
-    const periodicTable = this.$el.find('.periodic-table');
-    periodicTable.append('<div class="column-0"></div>');
-    periodicTable.append('<div class="column-1"></div>');
-    periodicTable.append('<div class="column-2"></div>');
-    periodicTable.append('<div class="column-3"></div>');
-    periodicTable.append('<div class="column-4"></div>');
-    periodicTable.append('<div class="column-5"></div>');
-    periodicTable.append('<div class="column-6"></div>');
-    periodicTable.append('<div class="column-7"></div>');
-    periodicTable.append('<div class="column-8"></div>');
-    periodicTable.append('<div class="column-9"></div>');
-    periodicTable.append('<div class="column-10"></div>');
-    periodicTable.append('<div class="column-11"></div>');
-    periodicTable.append('<div class="column-12"></div>');
-    periodicTable.append('<div class="column-12"></div>');
-    periodicTable.append('<div class="column-14"></div>');
-    periodicTable.append('<div class="column-15"></div>');
-    periodicTable.append('<div class="column-16"></div>');
-    periodicTable.append('<div class="column-17"></div>');
+  setupPeriodicTable(name) {
+    this.$el.append(`<div id="periodic-table-${name}" class="periodic-table"></div>`);
+    const $periodicTable = this.$el.find(`#periodic-table-${name}`);
+    $periodicTable.append('<div class="column-0"></div>');
+    $periodicTable.append('<div class="column-1"></div>');
+    $periodicTable.append('<div class="column-2"></div>');
+    $periodicTable.append('<div class="column-3"></div>');
+    $periodicTable.append('<div class="column-4"></div>');
+    $periodicTable.append('<div class="column-5"></div>');
+    $periodicTable.append('<div class="column-6"></div>');
+    $periodicTable.append('<div class="column-7"></div>');
+    $periodicTable.append('<div class="column-8"></div>');
+    $periodicTable.append('<div class="column-9"></div>');
+    $periodicTable.append('<div class="column-10"></div>');
+    $periodicTable.append('<div class="column-11"></div>');
+    $periodicTable.append('<div class="column-12"></div>');
+    $periodicTable.append('<div class="column-12"></div>');
+    $periodicTable.append('<div class="column-14"></div>');
+    $periodicTable.append('<div class="column-15"></div>');
+    $periodicTable.append('<div class="column-16"></div>');
+    $periodicTable.append('<div class="column-17"></div>');
 
     periodicTableElements.forEach( (el, idx) => {
-      const column = periodicTable.find(`.column-${idx % 18}`);
-      column.append(`<div >${el}</div>`);
+      const $column = $periodicTable.find(`.column-${idx % 18}`);
+      $column.append(`<div >${el}</div>`);
     });
   }
 
   setupBoard() {
-    this.setupPeriodicTable();
+    this.setupPeriodicTable("Marvel");
+    this.setupPeriodicTable("Capcom");
   }
 }
 

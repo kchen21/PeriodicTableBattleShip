@@ -1,6 +1,7 @@
 .periodic-table {
     width: 100%;
     min-width: 600px;
+    margin: 30px auto;
 }
 
 .periodic-table > div {
