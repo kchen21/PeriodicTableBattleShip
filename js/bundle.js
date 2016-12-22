@@ -79,12 +79,12 @@
 	// }
 	
 	var Game = function () {
-	  function Game(name) {
+	  function Game() {
 	    _classCallCheck(this, Game);
 	
 	    this.board = new Board();
-	    this.human = new HumanPlayer(name);
-	    this.computer = new ComputerPlayer('Computer');
+	    this.human = null;
+	    this.computer = null;
 	    this.humanShipCount = 0;
 	    this.computerShipCount = 0;
 	  }
@@ -99,6 +99,12 @@
 	    value: function registerHit(pos) {
 	      this.board.registerHit(pos);
 	    }
+	  }, {
+	    key: 'setHumanName',
+	    value: function setHumanName() {}
+	  }, {
+	    key: 'setComputerName',
+	    value: function setComputerName() {}
 	
 	    // run() {
 	    //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
@@ -158,7 +164,7 @@
 	      var game = this.game;
 	
 	      $elements.on('click', function (event) {
-	        if (game.shipCount < 17) {
+	        if (game.humanShipCount < 17) {
 	          var $element = $(event.currentTarget);
 	
 	          if ($element.html() === "-" || $element.hasClass('ship-part')) {
@@ -167,7 +173,7 @@
 	            $element.addClass('ship-part');
 	            $element.attr('style', 'background: black');
 	            _this.game.registerShip($element.data('pos'));
-	            game.shipCount += 1;
+	            game.humanShipCount += 1;
 	          }
 	        } else {
 	          $elements.off('click');
@@ -376,13 +382,11 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Board = __webpack_require__(4);
 	
 	var HumanPlayer = function HumanPlayer(name) {
 	  _classCallCheck(this, HumanPlayer);
@@ -397,6 +401,27 @@
 /***/ function(module, exports) {
 
 	"use strict";
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ComputerPlayer = function () {
+	  function ComputerPlayer() {
+	    _classCallCheck(this, ComputerPlayer);
+	  }
+	
+	  _createClass(ComputerPlayer, [{
+	    key: "contstructor",
+	    value: function contstructor(name) {
+	      this.name = name;
+	    }
+	  }]);
+	
+	  return ComputerPlayer;
+	}();
+	
+	module.exports = ComputerPlayer;
 
 /***/ }
 /******/ ]);

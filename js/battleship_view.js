@@ -30,7 +30,7 @@ class BattleshipView {
     const game = this.game;
 
     $elements.on('click', (event) => {
-      if (game.shipCount < 17) {
+      if (game.humanShipCount < 17) {
         const $element = $(event.currentTarget);
 
         if ($element.html() === "-" || $element.hasClass('ship-part')) {
@@ -39,7 +39,7 @@ class BattleshipView {
           $element.addClass('ship-part');
           $element.attr('style', 'background: black');
           this.game.registerShip($element.data('pos'));
-          game.shipCount += 1;
+          game.humanShipCount += 1;
         }
       } else {
         $elements.off('click');
