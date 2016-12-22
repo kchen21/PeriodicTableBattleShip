@@ -1,3 +1,7 @@
+$.fn.random = function() { // gets a random element from a selection returned by $(selector)
+  return this.eq(Math.floor(Math.random() * this.length));
+};
+
 const PERIODIC_TABLE_ELEMENTS = [
   'H','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','He',
   'Li','Be','-','-','-','-','-','-','-','-','-','-','B','C','N','O','F','Ne',
@@ -41,7 +45,6 @@ class BattleshipView {
         } else {
           $element.addClass('ship-part');
           $element.attr('style', 'background: black');
-          this.game.registerShip($element.data('pos'));
           game.humanShipCount += 1;
         }
       } else {
@@ -67,7 +70,6 @@ class BattleshipView {
       } else {
         if ($element.hasClass('ship-part')) {
           $element.attr('style', 'background: green');
-          this.game.registerHit($element.data('pos'));
         } else {
           $element.attr('style', 'background: red');
           console.log('You missed!');
@@ -86,6 +88,23 @@ class BattleshipView {
     $elements.each( (index, element) => {
       $(element).attr('style', 'background: blue');
     });
+  }
+
+  generateComputerShips() {
+    let computerName = this.game.getComputerName();
+    computerName = computerName.split(" ").join("-");
+
+    const $periodicTable = this.$el.find(`#periodic-table-${computerName}`);
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
+
+    while (this.game.computerShipCount < 17) {
+      const $randomElement = $elements.random();
+      if (!$randomElement.hasClass('ship-part') && $randomElement.html() !== "-") {
+        $randomElement.addClass('ship-part');
+        this.game.computerShipCount += 1;
+      }
+    }
   }
 
   setupPeriodicTable(name) {
@@ -123,6 +142,7 @@ class BattleshipView {
   setupBoard() {
     this.setupPeriodicTable(this.game.setHumanName());
     this.setupPeriodicTable(this.game.setComputerName());
+    this.generateComputerShips();
   }
 }
 

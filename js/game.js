@@ -12,19 +12,28 @@ const ComputerPlayer = require('./computer_player.js');
 
 class Game {
   constructor() {
-    this.board = new Board();
+    this.humanBoard = new Board();
+    this.computerBoard = new Board();
     this.human = null;
     this.computer = null;
     this.humanShipCount = 0;
     this.computerShipCount = 0;
   }
 
-  registerShip(pos) {
-    this.board.registerShip(pos);
+  registerHumanShip(pos) {
+    this.humanBoard.registerShip(pos);
   }
 
-  registerHit(pos) {
-    this.board.registerHit(pos);
+  registerComputerShip(pos) {
+    this.computerBoard.registerShip(pos);
+  }
+
+  registerHitOnHuman(pos) {
+    this.humanBoard.registerHit(pos);
+  }
+
+  registerHitOnComputer(pos) {
+    this.computerBoard.registerHit(pos);
   }
 
   setHumanName() {

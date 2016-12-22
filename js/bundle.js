@@ -82,7 +82,8 @@
 	  function Game() {
 	    _classCallCheck(this, Game);
 	
-	    this.board = new Board();
+	    this.humanBoard = new Board();
+	    this.computerBoard = new Board();
 	    this.human = null;
 	    this.computer = null;
 	    this.humanShipCount = 0;
@@ -90,14 +91,24 @@
 	  }
 	
 	  _createClass(Game, [{
-	    key: 'registerShip',
-	    value: function registerShip(pos) {
-	      this.board.registerShip(pos);
+	    key: 'registerHumanShip',
+	    value: function registerHumanShip(pos) {
+	      this.humanBoard.registerShip(pos);
 	    }
 	  }, {
-	    key: 'registerHit',
-	    value: function registerHit(pos) {
-	      this.board.registerHit(pos);
+	    key: 'registerComputerShip',
+	    value: function registerComputerShip(pos) {
+	      this.computerBoard.registerShip(pos);
+	    }
+	  }, {
+	    key: 'registerHitOnHuman',
+	    value: function registerHitOnHuman(pos) {
+	      this.humanBoard.registerHit(pos);
+	    }
+	  }, {
+	    key: 'registerHitOnComputer',
+	    value: function registerHitOnComputer(pos) {
+	      this.computerBoard.registerHit(pos);
 	    }
 	  }, {
 	    key: 'setHumanName',
@@ -155,6 +166,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	$.fn.random = function () {
+	  // gets a random element from a selection returned by $(selector)
+	  return this.eq(Math.floor(Math.random() * this.length));
+	};
+	
 	var PERIODIC_TABLE_ELEMENTS = ['H', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'He', 'Li', 'Be', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Mg', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Tc', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Re', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Cs', 'Ba', 'Lu', 'Hf', 'Ta', 'W', 'Re', 'Bh', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Uut', 'Fl', 'Uup', 'Lv', 'Uus', 'Uuo', '-', '-', '-', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', '-', '-', '-', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr'];
 	
 	var BattleshipView = function () {
@@ -193,7 +209,6 @@
 	          } else {
 	            $element.addClass('ship-part');
 	            $element.attr('style', 'background: black');
-	            _this.game.registerShip($element.data('pos'));
 	            game.humanShipCount += 1;
 	          }
 	        } else {
@@ -206,8 +221,6 @@
 	  }, {
 	    key: 'gameEvents',
 	    value: function gameEvents() {
-	      var _this2 = this;
-	
 	      var computerName = this.game.getComputerName();
 	      computerName = computerName.split(" ").join("-");
 	
@@ -222,7 +235,6 @@
 	        } else {
 	          if ($element.hasClass('ship-part')) {
 	            $element.attr('style', 'background: green');
-	            _this2.game.registerHit($element.data('pos'));
 	          } else {
 	            $element.attr('style', 'background: red');
 	            console.log('You missed!');
@@ -242,6 +254,24 @@
 	      $elements.each(function (index, element) {
 	        $(element).attr('style', 'background: blue');
 	      });
+	    }
+	  }, {
+	    key: 'generateComputerShips',
+	    value: function generateComputerShips() {
+	      var computerName = this.game.getComputerName();
+	      computerName = computerName.split(" ").join("-");
+	
+	      var $periodicTable = this.$el.find('#periodic-table-' + computerName);
+	      var $columns = $periodicTable.find('div');
+	      var $elements = $columns.find('div');
+	
+	      while (this.game.computerShipCount < 17) {
+	        var $randomElement = $elements.random();
+	        if (!$randomElement.hasClass('ship-part') && $randomElement.html() !== "-") {
+	          $randomElement.addClass('ship-part');
+	          this.game.computerShipCount += 1;
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'setupPeriodicTable',
@@ -281,6 +311,7 @@
 	    value: function setupBoard() {
 	      this.setupPeriodicTable(this.game.setHumanName());
 	      this.setupPeriodicTable(this.game.setComputerName());
+	      this.generateComputerShips();
 	    }
 	  }]);
 	
