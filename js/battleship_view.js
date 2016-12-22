@@ -17,20 +17,35 @@ class BattleshipView {
     this.$el = $el;
 
     this.setupBoard();
-    this.gameEvents();
+    this.setupEvents();
   }
 
   setupEvents() {
+    alert("Place 17 ships on the field");
+
     const $periodicTable = this.$el.find('.periodic-table');
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
+    const game = this.game;
+
     $elements.on('click', (event) => {
-      const $element = $(event.currentTarget);
-      $element.addClass('ship-part');
-      $element.attr('style', 'background: black');
-      this.game.registerShip($element.data('pos'));
-      this.game.shipCount += 1;
+      if (game.shipCount < 17) {
+        const $element = $(event.currentTarget);
+
+        if ($element.html() === "-" || $element.hasClass('ship-part')) {
+          alert("You can't place a ship there!");
+        } else {
+          $element.addClass('ship-part');
+          $element.attr('style', 'background: black');
+          this.game.registerShip($element.data('pos'));
+          game.shipCount += 1;
+        }
+      } else {
+        $elements.off('click');
+        this.hideShips();
+        this.gameEvents();
+      }
     });
   }
 
@@ -47,7 +62,6 @@ class BattleshipView {
         if ($element.hasClass('ship-part')) {
           $element.attr('style', 'background: green');
           this.game.registerHit($element.data('pos'));
-          this.game.shipCount -= 1;
         } else {
           $element.attr('style', 'background: red');
           console.log('You missed!');
@@ -57,12 +71,14 @@ class BattleshipView {
   }
 
   hideShips() {
+    alert("Let the games begin!");
+
     const $periodicTable = this.$el.find('.periodic-table');
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
-    $elements.each( () => {
-      $(this).attr('style', 'background: blue');
+    $elements.each( (index, element) => {
+      $(element).attr('style', 'background: blue');
     });
   }
 

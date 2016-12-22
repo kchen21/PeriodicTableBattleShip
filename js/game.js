@@ -1,5 +1,6 @@
 const Board = require('./board.js');
 const HumanPlayer = require('./human_player.js');
+const ComputerPlayer = require('./computer_player.js');
 
 // ships = {
 //   carrier: 5,
@@ -10,10 +11,12 @@ const HumanPlayer = require('./human_player.js');
 // }
 
 class Game {
-  constructor(name1, name2) {
+  constructor(name) {
     this.board = new Board();
-    this.player1 = new HumanPlayer(name1);
-    this.shipCount = 0;
+    this.human = new HumanPlayer(name);
+    this.computer = new ComputerPlayer('Computer');
+    this.humanShipCount = 0;
+    this.computerShipCount = 0;
   }
 
   registerShip(pos) {
@@ -23,6 +26,7 @@ class Game {
   registerHit(pos) {
     this.board.registerHit(pos);
   }
+
   // run() {
   //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
   //   const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');

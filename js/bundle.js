@@ -68,6 +68,7 @@
 	
 	var Board = __webpack_require__(4);
 	var HumanPlayer = __webpack_require__(6);
+	var ComputerPlayer = __webpack_require__(7);
 	
 	// ships = {
 	//   carrier: 5,
@@ -78,12 +79,14 @@
 	// }
 	
 	var Game = function () {
-	  function Game(name1, name2) {
+	  function Game(name) {
 	    _classCallCheck(this, Game);
 	
 	    this.board = new Board();
-	    this.player1 = new HumanPlayer(name1);
-	    this.shipCount = 0;
+	    this.human = new HumanPlayer(name);
+	    this.computer = new ComputerPlayer('Computer');
+	    this.humanShipCount = 0;
+	    this.computerShipCount = 0;
 	  }
 	
 	  _createClass(Game, [{
@@ -96,6 +99,7 @@
 	    value: function registerHit(pos) {
 	      this.board.registerHit(pos);
 	    }
+	
 	    // run() {
 	    //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
 	    //   const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
@@ -137,7 +141,7 @@
 	    this.$el = $el;
 	
 	    this.setupBoard();
-	    this.gameEvents();
+	    this.setupEvents();
 	  }
 	
 	  _createClass(BattleshipView, [{
@@ -145,16 +149,31 @@
 	    value: function setupEvents() {
 	      var _this = this;
 	
+	      alert("Place 17 ships on the field");
+	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
+	      var game = this.game;
+	
 	      $elements.on('click', function (event) {
-	        var $element = $(event.currentTarget);
-	        $element.addClass('ship-part');
-	        $element.attr('style', 'background: black');
-	        _this.game.registerShip($element.data('pos'));
-	        _this.game.shipCount += 1;
+	        if (game.shipCount < 17) {
+	          var $element = $(event.currentTarget);
+	
+	          if ($element.html() === "-" || $element.hasClass('ship-part')) {
+	            alert("You can't place a ship there!");
+	          } else {
+	            $element.addClass('ship-part');
+	            $element.attr('style', 'background: black');
+	            _this.game.registerShip($element.data('pos'));
+	            game.shipCount += 1;
+	          }
+	        } else {
+	          $elements.off('click');
+	          _this.hideShips();
+	          _this.gameEvents();
+	        }
 	      });
 	    }
 	  }, {
@@ -174,7 +193,6 @@
 	          if ($element.hasClass('ship-part')) {
 	            $element.attr('style', 'background: green');
 	            _this2.game.registerHit($element.data('pos'));
-	            _this2.game.shipCount -= 1;
 	          } else {
 	            $element.attr('style', 'background: red');
 	            console.log('You missed!');
@@ -185,14 +203,14 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      var _this3 = this;
+	      alert("Let the games begin!");
 	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
-	      $elements.each(function () {
-	        $(_this3).attr('style', 'background: blue');
+	      $elements.each(function (index, element) {
+	        $(element).attr('style', 'background: blue');
 	      });
 	    }
 	  }, {
@@ -373,6 +391,12 @@
 	};
 	
 	module.exports = HumanPlayer;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 /***/ }
 /******/ ]);
