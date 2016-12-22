@@ -49,7 +49,8 @@
 	var BattleshipGame = __webpack_require__(1);
 	var BattleshipView = __webpack_require__(2);
 	
-	$(function () {
+	$(document).ready(function () {
+	  console.log("I'm running!");
 	  var rootEl = $('.pt-battleship');
 	  var game = new BattleshipGame();
 	  new BattleshipView(game, rootEl);
@@ -73,37 +74,71 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var View = function () {
-	  function View(game, $el) {
-	    _classCallCheck(this, View);
+	var periodicTableElements = ['H', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'He', 'Li', 'Be', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Mg', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Tc', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Re', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Cs', 'Ba', 'Lu', 'Hf', 'Ta', 'W', 'Re', 'Bh', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Uut', 'Fl', 'Uup', 'Lv', 'Uus', 'Uuo', '-', '-', '-', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', '-', '-', '-', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr'];
+	
+	var BattleshipView = function () {
+	  function BattleshipView(game, $el) {
+	    _classCallCheck(this, BattleshipView);
 	
 	    this.game = game;
 	    this.$el = $el;
 	
 	    this.setupBoard();
+	    this.bindEvents();
 	  }
 	
-	  _createClass(View, [{
-	    key: "bindEvents",
+	  _createClass(BattleshipView, [{
+	    key: 'bindEvents',
 	    value: function bindEvents() {}
 	  }, {
-	    key: "makeMove",
+	    key: 'makeMove',
 	    value: function makeMove($square) {}
 	  }, {
-	    key: "setupBoard",
-	    value: function setupBoard() {}
+	    key: 'setupPeriodicTable',
+	    value: function setupPeriodicTable() {
+	      this.$el.append('<div class="periodic-table"></div>');
+	      var periodicTable = this.$el.find('.periodic-table');
+	      periodicTable.append('<div class="column-0"></div>');
+	      periodicTable.append('<div class="column-1"></div>');
+	      periodicTable.append('<div class="column-2"></div>');
+	      periodicTable.append('<div class="column-3"></div>');
+	      periodicTable.append('<div class="column-4"></div>');
+	      periodicTable.append('<div class="column-5"></div>');
+	      periodicTable.append('<div class="column-6"></div>');
+	      periodicTable.append('<div class="column-7"></div>');
+	      periodicTable.append('<div class="column-8"></div>');
+	      periodicTable.append('<div class="column-9"></div>');
+	      periodicTable.append('<div class="column-10"></div>');
+	      periodicTable.append('<div class="column-11"></div>');
+	      periodicTable.append('<div class="column-12"></div>');
+	      periodicTable.append('<div class="column-12"></div>');
+	      periodicTable.append('<div class="column-14"></div>');
+	      periodicTable.append('<div class="column-15"></div>');
+	      periodicTable.append('<div class="column-16"></div>');
+	      periodicTable.append('<div class="column-17"></div>');
+	
+	      periodicTableElements.forEach(function (el, idx) {
+	        var column = periodicTable.find('.column-' + idx % 18);
+	        column.append('<div>' + el + '</div>');
+	      });
+	    }
+	  }, {
+	    key: 'setupBoard',
+	    value: function setupBoard() {
+	      this.setupPeriodicTable();
+	    }
 	  }]);
 	
-	  return View;
+	  return BattleshipView;
 	}();
 	
-	module.exports = View;
+	module.exports = BattleshipView;
 
 /***/ }
 /******/ ]);
