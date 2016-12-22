@@ -7,15 +7,18 @@
 .periodic-table > div {
 	width: 5.5%;
 	display: inline-block;
-	margin-right: -7px;
 }
 
 .periodic-table > div > div {
-    border: 3px solid white;
+    border: 1px solid white;
     box-sizing: border-box;
     text-align: center;
     background: blue;
-    margin-top: -3px;
     padding: 20% 0;
     color: white;
+}
+
+.periodic-table > div > div:hover {
+  cursor: pointer;
+  opacity: 0.75;
 }

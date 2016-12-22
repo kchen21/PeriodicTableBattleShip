@@ -52,7 +52,7 @@ class BattleshipView {
     $periodicTable.append('<div class="column-10"></div>');
     $periodicTable.append('<div class="column-11"></div>');
     $periodicTable.append('<div class="column-12"></div>');
-    $periodicTable.append('<div class="column-12"></div>');
+    $periodicTable.append('<div class="column-13"></div>');
     $periodicTable.append('<div class="column-14"></div>');
     $periodicTable.append('<div class="column-15"></div>');
     $periodicTable.append('<div class="column-16"></div>');
