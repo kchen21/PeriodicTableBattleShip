@@ -101,10 +101,28 @@
 	    }
 	  }, {
 	    key: 'setHumanName',
-	    value: function setHumanName() {}
+	    value: function setHumanName() {
+	      var humanName = prompt("Please enter your name", "Captain Jack Sparrow");
+	      this.human = new HumanPlayer(humanName);
+	      return humanName;
+	    }
 	  }, {
 	    key: 'setComputerName',
-	    value: function setComputerName() {}
+	    value: function setComputerName() {
+	      var computerName = prompt("Please give the computer a name", "Captain Hector Barbossa");
+	      this.computer = new ComputerPlayer(computerName);
+	      return computerName;
+	    }
+	  }, {
+	    key: 'getHumanName',
+	    value: function getHumanName() {
+	      return this.human.name;
+	    }
+	  }, {
+	    key: 'getComputerName',
+	    value: function getComputerName() {
+	      return this.computer.name;
+	    }
 	
 	    // run() {
 	    //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
@@ -155,9 +173,12 @@
 	    value: function setupEvents() {
 	      var _this = this;
 	
-	      alert("Place 17 ships on the field");
+	      alert("Place 17 ships onto the field and then click on a random element to begin!");
 	
-	      var $periodicTable = this.$el.find('.periodic-table');
+	      var humanName = this.game.getHumanName();
+	      humanName = humanName.split(" ").join("-");
+	
+	      var $periodicTable = this.$el.find('#periodic-table-' + humanName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
@@ -187,7 +208,10 @@
 	    value: function gameEvents() {
 	      var _this2 = this;
 	
-	      var $periodicTable = this.$el.find('.periodic-table');
+	      var computerName = this.game.getComputerName();
+	      computerName = computerName.split(" ").join("-");
+	
+	      var $periodicTable = this.$el.find('#periodic-table-' + computerName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
@@ -223,6 +247,7 @@
 	    key: 'setupPeriodicTable',
 	    value: function setupPeriodicTable(name) {
 	      this.$el.append('<h2>' + name + '\'s Fleet<h2>');
+	      name = name.split(" ").join("-");
 	      this.$el.append('<div id="periodic-table-' + name + '" class="periodic-table"></div>');
 	      var $periodicTable = this.$el.find('#periodic-table-' + name);
 	      $periodicTable.append('<div class="column-0"></div>');
@@ -254,8 +279,8 @@
 	  }, {
 	    key: 'setupBoard',
 	    value: function setupBoard() {
-	      this.setupPeriodicTable("Marvel");
-	      this.setupPeriodicTable("Capcom");
+	      this.setupPeriodicTable(this.game.setHumanName());
+	      this.setupPeriodicTable(this.game.setComputerName());
 	    }
 	  }]);
 	
@@ -402,24 +427,13 @@
 
 	"use strict";
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var ComputerPlayer = function () {
-	  function ComputerPlayer() {
-	    _classCallCheck(this, ComputerPlayer);
-	  }
+	var ComputerPlayer = function ComputerPlayer(name) {
+	  _classCallCheck(this, ComputerPlayer);
 	
-	  _createClass(ComputerPlayer, [{
-	    key: "contstructor",
-	    value: function contstructor(name) {
-	      this.name = name;
-	    }
-	  }]);
-	
-	  return ComputerPlayer;
-	}();
+	  this.name = name;
+	};
 	
 	module.exports = ComputerPlayer;
 

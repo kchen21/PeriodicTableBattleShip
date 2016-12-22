@@ -1,5 +1,5 @@
 class ComputerPlayer {
-  contstructor(name) {
+  constructor(name) {
     this.name = name;
   }
 }

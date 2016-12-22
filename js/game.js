@@ -28,11 +28,23 @@ class Game {
   }
 
   setHumanName() {
-
+    const humanName = prompt("Please enter your name", "Captain Jack Sparrow");
+    this.human = new HumanPlayer(humanName);
+    return humanName;
   }
 
   setComputerName() {
-    
+    const computerName = prompt("Please give the computer a name", "Captain Hector Barbossa");
+    this.computer = new ComputerPlayer(computerName);
+    return computerName;
+  }
+
+  getHumanName() {
+    return this.human.name;
+  }
+
+  getComputerName() {
+    return this.computer.name;
   }
 
   // run() {

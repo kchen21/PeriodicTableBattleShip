@@ -21,9 +21,12 @@ class BattleshipView {
   }
 
   setupEvents() {
-    alert("Place 17 ships on the field");
+    alert("Place 17 ships onto the field and then click on a random element to begin!");
 
-    const $periodicTable = this.$el.find('.periodic-table');
+    let humanName = this.game.getHumanName();
+    humanName = humanName.split(" ").join("-");
+
+    const $periodicTable = this.$el.find(`#periodic-table-${humanName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
@@ -50,7 +53,10 @@ class BattleshipView {
   }
 
   gameEvents() {
-    const $periodicTable = this.$el.find('.periodic-table');
+    let computerName = this.game.getComputerName();
+    computerName = computerName.split(" ").join("-");
+
+    const $periodicTable = this.$el.find(`#periodic-table-${computerName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
@@ -84,6 +90,7 @@ class BattleshipView {
 
   setupPeriodicTable(name) {
     this.$el.append(`<h2>${name}'s Fleet<h2>`);
+    name = name.split(" ").join("-");
     this.$el.append(`<div id="periodic-table-${name}" class="periodic-table"></div>`);
     const $periodicTable = this.$el.find(`#periodic-table-${name}`);
     $periodicTable.append('<div class="column-0"></div>');
@@ -114,8 +121,8 @@ class BattleshipView {
   }
 
   setupBoard() {
-    this.setupPeriodicTable("Marvel");
-    this.setupPeriodicTable("Capcom");
+    this.setupPeriodicTable(this.game.setHumanName());
+    this.setupPeriodicTable(this.game.setComputerName());
   }
 }
 
