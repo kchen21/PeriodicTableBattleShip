@@ -205,7 +205,7 @@
 	          var $element = $(event.currentTarget);
 	
 	          if ($element.html() === "-" || $element.hasClass('ship-part')) {
-	            alert("You can't place a ship there!");
+	            alert("You must place a ship on an element that has no ship!");
 	          } else {
 	            $element.addClass('ship-part');
 	            $element.attr('style', 'background: black');
@@ -232,7 +232,7 @@
 	        var $element = $(event.currentTarget);
 	        var wasAttacked = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
 	        if ($element.html() === "-" || wasAttacked) {
-	          alert("Invalid target");
+	          alert("You must target an element that hasn't been attacked!");
 	        } else {
 	          if ($element.hasClass('ship-part')) {
 	            $element.attr('style', 'background: green');
