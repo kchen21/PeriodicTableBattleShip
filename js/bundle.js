@@ -230,7 +230,8 @@
 	
 	      $elements.on('click', function (event) {
 	        var $element = $(event.currentTarget);
-	        if ($element.html() === "-") {
+	        var wasAttacked = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
+	        if ($element.html() === "-" || wasAttacked) {
 	          alert("Invalid target");
 	        } else {
 	          if ($element.hasClass('ship-part')) {

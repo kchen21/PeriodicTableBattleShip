@@ -65,7 +65,8 @@ class BattleshipView {
 
     $elements.on('click', (event) => {
       const $element = $(event.currentTarget);
-      if ($element.html() === "-") {
+      const wasAttacked = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
+      if ($element.html() === "-" || wasAttacked) {
         alert("Invalid target");
       } else {
         if ($element.hasClass('ship-part')) {
