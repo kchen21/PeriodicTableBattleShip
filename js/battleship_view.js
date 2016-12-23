@@ -29,18 +29,20 @@ class BattleshipView {
   setupEvents() {
     alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
 
-    let humanName = this.game.getHumanName();
-    humanName = humanName.split(" ").join("-");
+    const humanName = this.game.getHumanName();
+    const dashedHumanName = humanName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${humanName}`);
+    const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
+    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
 
     const game = this.game;
 
     $elements.on('click', (event) => {
       if (game.humanShipCount < 17) {
         const $element = $(event.currentTarget);
+        const elementSymbol = $element.data('sym');
 
         if ($element.html() === "-" || $element.hasClass('ship-part')) {
           alert("You must place a ship on an element that has no ship!");
@@ -48,8 +50,11 @@ class BattleshipView {
           $element.addClass('ship-part');
           $element.attr('style', 'background: black');
           game.humanShipCount += 1;
+          $selectedElementInfo.empty();
+          $selectedElementInfo.html(`<section class="action">${humanName} placed a ship on ${elementSymbol}.</section> ${ElementInfo[elementSymbol]}`);
         }
       } else {
+        $selectedElementInfo.empty();
         $elements.off('click');
         this.hideShips();
         this.targetComputerTableElement();
@@ -58,7 +63,7 @@ class BattleshipView {
   }
 
   hideShips() {
-    alert(`Let the games begin! During each round, select an element on ${this.game.getComputerName()}'s table to launch a cannonball at it. He/She will do the same. Whomever sinks all of his/her opponent's ships first wins!`);
+    alert(`Let the games begin! During each round, select an element on ${this.game.getComputerName()}'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent's ships first wins!`);
 
     const $periodicTable = this.$el.find('.periodic-table');
     const $columns = $periodicTable.find('div');
@@ -84,18 +89,21 @@ class BattleshipView {
   }
 
   targetComputerTableElement() {
-    let computerName = this.game.getComputerName();
-    computerName = computerName.split(" ").join("-");
+    const humanName = this.game.getHumanName();
+    const computerName = this.game.getComputerName();
+    const dashedComputerName = computerName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${computerName}`);
+    const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
+    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
     const battle = this.battle.bind(this);
 
     $elements.on('click', (event) => {
       const $element = $(event.currentTarget);
+      const elementSymbol = $element.data('sym');
       const wasAttacked = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
 
       if ($element.html() === "-" || wasAttacked) {
@@ -109,6 +117,9 @@ class BattleshipView {
           $element.attr('style', 'background: red');
           console.log('You missed!');
         }
+
+        $selectedElementInfo.empty();
+        $selectedElementInfo.html(`<section class="action">${humanName} launched a missile at ${elementSymbol}.</section> ${ElementInfo[elementSymbol]}`);
         $elements.off('click');
         game.currentPlayer = "computer";
         battle();
@@ -117,12 +128,14 @@ class BattleshipView {
   }
 
   targetHumanTableElement() {
-    let humanName = this.game.getHumanName();
-    humanName = humanName.split(" ").join("-");
+    const humanName = this.game.getHumanName();
+    const computerName = this.game.getComputerName();
+    const dashedHumanName = humanName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${humanName}`);
+    const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
+    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
 
     let legalTargetFound = false;
 
@@ -130,6 +143,8 @@ class BattleshipView {
       const $randomElement = $elements.random();
 
       if (!$randomElement.hasClass('targetted') && $randomElement.html() !== "-") {
+        const randomElementSymbol = $randomElement.data('sym');
+
         $randomElement.addClass('targetted');
 
         if ($randomElement.hasClass('ship-part')) {
@@ -139,6 +154,8 @@ class BattleshipView {
           $randomElement.attr('style', 'background: red');
         }
 
+        $selectedElementInfo.empty();
+        $selectedElementInfo.html(`<section class="action">${computerName} launched a missile at ${randomElementSymbol}.</section> ${ElementInfo[randomElementSymbol]}`);
         legalTargetFound = true;
       }
     }
@@ -148,10 +165,10 @@ class BattleshipView {
   }
 
   generateComputerShips() {
-    let computerName = this.game.getComputerName();
-    computerName = computerName.split(" ").join("-");
+    const computerName = this.game.getComputerName();
+    const dashedComputerName = computerName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${computerName}`);
+    const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
@@ -166,9 +183,9 @@ class BattleshipView {
 
   setupPeriodicTable(name) {
     this.$el.append(`<h2>${name}'s Fleet<h2>`);
-    name = name.split(" ").join("-");
-    this.$el.append(`<div id="periodic-table-${name}" class="periodic-table"></div>`);
-    const $periodicTable = this.$el.find(`#periodic-table-${name}`);
+    const dashedName = name.split(" ").join("-");
+    this.$el.append(`<div id="periodic-table-${dashedName}" class="periodic-table"></div>`);
+    const $periodicTable = this.$el.find(`#periodic-table-${dashedName}`);
     $periodicTable.append('<div class="column-0"></div>');
     $periodicTable.append('<div class="column-1"></div>');
     $periodicTable.append('<div class="column-2"></div>');
@@ -196,7 +213,7 @@ class BattleshipView {
       $column.append($element);
     });
 
-    this.$el.append(`<p class="info-about-selected-element-${name}"></p>`);
+    this.$el.append(`<p class="selected-element-info-${dashedName}"></p>`);
   }
 
   setupBoard() {

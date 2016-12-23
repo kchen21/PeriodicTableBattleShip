@@ -195,17 +195,19 @@
 	      alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
 	
 	      var humanName = this.game.getHumanName();
-	      humanName = humanName.split(" ").join("-");
+	      var dashedHumanName = humanName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + humanName);
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
+	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var game = this.game;
 	
 	      $elements.on('click', function (event) {
 	        if (game.humanShipCount < 17) {
 	          var $element = $(event.currentTarget);
+	          var elementSymbol = $element.data('sym');
 	
 	          if ($element.html() === "-" || $element.hasClass('ship-part')) {
 	            alert("You must place a ship on an element that has no ship!");
@@ -213,8 +215,11 @@
 	            $element.addClass('ship-part');
 	            $element.attr('style', 'background: black');
 	            game.humanShipCount += 1;
+	            $selectedElementInfo.empty();
+	            $selectedElementInfo.html('<section class="action">' + humanName + ' placed a ship on ' + elementSymbol + '.</section> ' + ElementInfo[elementSymbol]);
 	          }
 	        } else {
+	          $selectedElementInfo.empty();
 	          $elements.off('click');
 	          _this.hideShips();
 	          _this.targetComputerTableElement();
@@ -224,7 +229,7 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert('Let the games begin! During each round, select an element on ' + this.game.getComputerName() + '\'s table to launch a cannonball at it. He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
+	      alert('Let the games begin! During each round, select an element on ' + this.game.getComputerName() + '\'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
 	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
@@ -252,18 +257,21 @@
 	  }, {
 	    key: 'targetComputerTableElement',
 	    value: function targetComputerTableElement() {
+	      var humanName = this.game.getHumanName();
 	      var computerName = this.game.getComputerName();
-	      computerName = computerName.split(" ").join("-");
+	      var dashedComputerName = computerName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + computerName);
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
+	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
 	      var battle = this.battle.bind(this);
 	
 	      $elements.on('click', function (event) {
 	        var $element = $(event.currentTarget);
+	        var elementSymbol = $element.data('sym');
 	        var wasAttacked = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
 	
 	        if ($element.html() === "-" || wasAttacked) {
@@ -277,6 +285,9 @@
 	            $element.attr('style', 'background: red');
 	            console.log('You missed!');
 	          }
+	
+	          $selectedElementInfo.empty();
+	          $selectedElementInfo.html('<section class="action">' + humanName + ' launched a missile at ' + elementSymbol + '.</section> ' + ElementInfo[elementSymbol]);
 	          $elements.off('click');
 	          game.currentPlayer = "computer";
 	          battle();
@@ -287,11 +298,13 @@
 	    key: 'targetHumanTableElement',
 	    value: function targetHumanTableElement() {
 	      var humanName = this.game.getHumanName();
-	      humanName = humanName.split(" ").join("-");
+	      var computerName = this.game.getComputerName();
+	      var dashedHumanName = humanName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + humanName);
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
+	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var legalTargetFound = false;
 	
@@ -299,6 +312,8 @@
 	        var $randomElement = $elements.random();
 	
 	        if (!$randomElement.hasClass('targetted') && $randomElement.html() !== "-") {
+	          var randomElementSymbol = $randomElement.data('sym');
+	
 	          $randomElement.addClass('targetted');
 	
 	          if ($randomElement.hasClass('ship-part')) {
@@ -308,6 +323,8 @@
 	            $randomElement.attr('style', 'background: red');
 	          }
 	
+	          $selectedElementInfo.empty();
+	          $selectedElementInfo.html('<section class="action">' + computerName + ' launched a missile at ' + randomElementSymbol + '.</section> ' + ElementInfo[randomElementSymbol]);
 	          legalTargetFound = true;
 	        }
 	      }
@@ -319,9 +336,9 @@
 	    key: 'generateComputerShips',
 	    value: function generateComputerShips() {
 	      var computerName = this.game.getComputerName();
-	      computerName = computerName.split(" ").join("-");
+	      var dashedComputerName = computerName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + computerName);
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
 	      var $columns = $periodicTable.find('div');
 	      var $elements = $columns.find('div');
 	
@@ -337,9 +354,9 @@
 	    key: 'setupPeriodicTable',
 	    value: function setupPeriodicTable(name) {
 	      this.$el.append('<h2>' + name + '\'s Fleet<h2>');
-	      name = name.split(" ").join("-");
-	      this.$el.append('<div id="periodic-table-' + name + '" class="periodic-table"></div>');
-	      var $periodicTable = this.$el.find('#periodic-table-' + name);
+	      var dashedName = name.split(" ").join("-");
+	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);
 	      $periodicTable.append('<div class="column-0"></div>');
 	      $periodicTable.append('<div class="column-1"></div>');
 	      $periodicTable.append('<div class="column-2"></div>');
@@ -367,7 +384,7 @@
 	        $column.append($element);
 	      });
 	
-	      this.$el.append('<p class="info-about-selected-element-' + name + '"></p>');
+	      this.$el.append('<p class="selected-element-info-' + dashedName + '"></p>');
 	    }
 	  }, {
 	    key: 'setupBoard',
