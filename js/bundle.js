@@ -214,7 +214,7 @@
 	        } else {
 	          $elements.off('click');
 	          _this.hideShips();
-	          _this.targetComputerElement();
+	          _this.targetComputerTableElement();
 	        }
 	      });
 	    }

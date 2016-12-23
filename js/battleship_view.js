@@ -50,7 +50,7 @@ class BattleshipView {
       } else {
         $elements.off('click');
         this.hideShips();
-        this.targetComputerElement();
+        this.targetComputerTableElement();
       }
     });
   }
