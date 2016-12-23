@@ -67,7 +67,7 @@ class BattleshipView {
       const $element = $(event.currentTarget);
       const wasAttacked = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
       if ($element.html() === "-" || wasAttacked) {
-        alert("You must target an element that hasn't been attacked!");
+        alert("You must target an element that hasn't been targetted before!");
       } else {
         if ($element.hasClass('ship-part')) {
           $element.attr('style', 'background: green');
