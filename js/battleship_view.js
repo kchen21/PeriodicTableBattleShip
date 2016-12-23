@@ -55,7 +55,33 @@ class BattleshipView {
     });
   }
 
-  targetComputerTableElement() { // target an element from the computer's table
+  hideShips() {
+    alert("Let the games begin!");
+
+    const $periodicTable = this.$el.find('.periodic-table');
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
+
+    $elements.each( (index, element) => {
+      $(element).attr('style', 'background: blue');
+    });
+  }
+
+  battle() {
+    if (this.game.humanShipCount > 0 && this.game.computerShipCount > 0) {
+      if (this.game.currentPlayer === "human") {
+        this.targetComputerTableElement();
+      } else if (this.game.currentPlayer === "computer") {
+        this.targetHumanTableElement();
+      }
+    } else if (this.game.humanShipCount === 0) {
+      alert(`${this.game.getComputerName()} wins!`);
+    } else if (this.game.computerShipCount === 0) {
+      alert(`${this.game.getHumanName()} wins!`);
+    }
+  }
+
+  targetComputerTableElement() {
     let computerName = this.game.getComputerName();
     computerName = computerName.split(" ").join("-");
 
@@ -63,23 +89,32 @@ class BattleshipView {
     const $columns = $periodicTable.find('div');
     const $elements = $columns.find('div');
 
+    const game = this.game;
+    const battle = this.battle.bind(this);
+
     $elements.on('click', (event) => {
       const $element = $(event.currentTarget);
       const wasAttacked = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
+
       if ($element.html() === "-" || wasAttacked) {
         alert("You must target an element that hasn't been targetted before!");
       } else {
         if ($element.hasClass('ship-part')) {
           $element.attr('style', 'background: green');
+          game.computerShipCount -= 1;
+          console.log("You hit a ship!");
         } else {
           $element.attr('style', 'background: red');
           console.log('You missed!');
         }
+        $elements.off('click');
+        game.currentPlayer = "computer";
+        battle();
       }
     });
   }
 
-  targetHumanTableElement() { // target an element from the human's table
+  targetHumanTableElement() {
     let humanName = this.game.getHumanName();
     humanName = humanName.split(" ").join("-");
 
@@ -97,6 +132,7 @@ class BattleshipView {
 
         if ($randomElement.hasClass('ship-part')) {
           $randomElement.attr('style', 'background: green');
+          this.game.humanShipCount -= 1;
         } else {
           $randomElement.attr('style', 'background: red');
         }
@@ -104,18 +140,9 @@ class BattleshipView {
         legalTargetFound = true;
       }
     }
-  }
 
-  hideShips() {
-    alert("Let the games begin!");
-
-    const $periodicTable = this.$el.find('.periodic-table');
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('div');
-
-    $elements.each( (index, element) => {
-      $(element).attr('style', 'background: blue');
-    });
+    this.game.currentPlayer = "human";
+    this.battle();
   }
 
   generateComputerShips() {

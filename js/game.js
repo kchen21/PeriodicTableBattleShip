@@ -18,6 +18,7 @@ class Game {
     this.computer = null;
     this.humanShipCount = 0;
     this.computerShipCount = 0;
+    this.currentPlayer = "human";
   }
 
   registerHumanShip(pos) {
