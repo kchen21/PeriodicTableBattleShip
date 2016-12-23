@@ -222,7 +222,7 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert("Let the games begin!");
+	      alert('Let the games begin! During each round,\n      select an element on ' + this.game.getComputerName() + '\'s table to launch a cannonball at it.\n      He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
 	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');

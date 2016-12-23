@@ -56,7 +56,9 @@ class BattleshipView {
   }
 
   hideShips() {
-    alert("Let the games begin!");
+    alert(`Let the games begin! During each round,
+      select an element on ${this.game.getComputerName()}'s table to launch a cannonball at it.
+      He/She will do the same. Whomever sinks all of his/her opponent's ships first wins!`);
 
     const $periodicTable = this.$el.find('.periodic-table');
     const $columns = $periodicTable.find('div');
