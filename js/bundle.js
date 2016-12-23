@@ -190,7 +190,7 @@
 	    value: function setupEvents() {
 	      var _this = this;
 	
-	      alert("Place 17 ships onto the field and then click on a random element to begin!");
+	      alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin!");
 	
 	      var humanName = this.game.getHumanName();
 	      humanName = humanName.split(" ").join("-");
