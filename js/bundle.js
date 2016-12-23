@@ -190,7 +190,7 @@
 	    value: function setupEvents() {
 	      var _this = this;
 	
-	      alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin!");
+	      alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
 	
 	      var humanName = this.game.getHumanName();
 	      humanName = humanName.split(" ").join("-");
@@ -222,7 +222,7 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert('Let the games begin! During each round,\n      select an element on ' + this.game.getComputerName() + '\'s table to launch a cannonball at it.\n      He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
+	      alert('Let the games begin! During each round, select an element on ' + this.game.getComputerName() + '\'s table to launch a cannonball at it. He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
 	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
