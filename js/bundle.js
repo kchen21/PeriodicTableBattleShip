@@ -214,13 +214,14 @@
 	        } else {
 	          $elements.off('click');
 	          _this.hideShips();
-	          _this.gameEvents();
+	          _this.targetComputerElement();
 	        }
 	      });
 	    }
 	  }, {
-	    key: 'gameEvents',
-	    value: function gameEvents() {
+	    key: 'targetComputerTableElement',
+	    value: function targetComputerTableElement() {
+	      // target an element from the computer's table
 	      var computerName = this.game.getComputerName();
 	      computerName = computerName.split(" ").join("-");
 	
@@ -242,6 +243,35 @@
 	          }
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'targetHumanTableElement',
+	    value: function targetHumanTableElement() {
+	      // target an element from the human's table
+	      var humanName = this.game.getHumanName();
+	      humanName = humanName.split(" ").join("-");
+	
+	      var $periodicTable = this.$el.find('#periodic-table-' + humanName);
+	      var $columns = $periodicTable.find('div');
+	      var $elements = $columns.find('div');
+	
+	      var legalTargetFound = false;
+	
+	      while (!legalTargetFound) {
+	        var $randomElement = $elements.random();
+	
+	        if (!$randomElement.hasClass('targetted') && $randomElement.html() !== "-") {
+	          $randomElement.addClass('targetted');
+	
+	          if ($randomElement.hasClass('ship-part')) {
+	            $randomElement.attr('style', 'background: green');
+	          } else {
+	            $randomElement.attr('style', 'background: red');
+	          }
+	
+	          legalTargetFound = true;
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'hideShips',

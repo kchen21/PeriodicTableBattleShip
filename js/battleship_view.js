@@ -50,12 +50,12 @@ class BattleshipView {
       } else {
         $elements.off('click');
         this.hideShips();
-        this.gameEvents();
+        this.targetComputerElement();
       }
     });
   }
 
-  gameEvents() {
+  targetComputerTableElement() { // target an element from the computer's table
     let computerName = this.game.getComputerName();
     computerName = computerName.split(" ").join("-");
 
@@ -77,6 +77,33 @@ class BattleshipView {
         }
       }
     });
+  }
+
+  targetHumanTableElement() { // target an element from the human's table
+    let humanName = this.game.getHumanName();
+    humanName = humanName.split(" ").join("-");
+
+    const $periodicTable = this.$el.find(`#periodic-table-${humanName}`);
+    const $columns = $periodicTable.find('div');
+    const $elements = $columns.find('div');
+
+    let legalTargetFound = false;
+
+    while (!legalTargetFound) {
+      const $randomElement = $elements.random();
+
+      if (!$randomElement.hasClass('targetted') && $randomElement.html() !== "-") {
+        $randomElement.addClass('targetted');
+
+        if ($randomElement.hasClass('ship-part')) {
+          $randomElement.attr('style', 'background: green');
+        } else {
+          $randomElement.attr('style', 'background: red');
+        }
+
+        legalTargetFound = true;
+      }
+    }
   }
 
   hideShips() {
