@@ -1,3 +1,5 @@
+const ElementInfo = require('./element_info.js');
+
 $.fn.random = function() { // gets a random element from a selection returned by $(selector)
   return this.eq(Math.floor(Math.random() * this.length));
 };
@@ -190,8 +192,11 @@ class BattleshipView {
       const $column = $periodicTable.find(`.column-${idx % 18}`);
       let $element = $(`<div>${el}</div>`);
       $element.data('pos', [Math.floor(idx / 18), (idx % 18)]);
+      $element.data('sym', el);
       $column.append($element);
     });
+
+    this.$el.append(`<p class="info-about-selected-element-${name}"></p>`);
   }
 
   setupBoard() {
