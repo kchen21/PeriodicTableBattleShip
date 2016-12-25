@@ -19,7 +19,9 @@ button, article, footer, small {
 
 body {
   margin: 8px;
+  background: #00008B;
   font-family: serif;
+  color: white;
 }
 
 h1 {
