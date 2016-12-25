@@ -1,6 +1,42 @@
+/* --- RESET --- */
+
+html, body, header, nav, h1, a, ul, li,
+strong, main, section, img, div, h2, p,
+form, fieldset, label, input, textarea,
+button, article, footer, small {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  font: inherit;
+  background: transparent;
+  vertical-align: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  box-sizing: inherit;
+  color: inherit;
+}
+
+body {
+  margin: 8px;
+  font-family: serif;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.periodic-table-header {
+  margin-top: 24px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .periodic-table {
     width: 100%;
     min-width: 600px;
+    margin: 8px 0;
 }
 
 .periodic-table > div {
@@ -24,4 +60,38 @@
 
 .action {
   font-weight: bold;
+}
+
+.legend {
+  margin: 8px 16px 8px 0;
+  text-align: right;
+}
+
+.legend > label {
+  font-weight: bold;
+}
+
+ul {
+  list-style: none;
+  display: inline;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  width: 5.15%;
+  min-width: 36px;
+  border: 1px solid white;
+  box-sizing: border-box;
+  text-align: center;
+  color: white;
+  padding: 1% 0;
+}
+
+.hit-icon {
+background: green;
+}
+
+.miss-icon {
+background: red;
 }

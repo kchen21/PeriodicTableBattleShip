@@ -353,7 +353,7 @@
 	  }, {
 	    key: 'setupPeriodicTable',
 	    value: function setupPeriodicTable(name) {
-	      this.$el.append('<h2>' + name + '\'s Fleet<h2>');
+	      this.$el.append('<h2 class="periodic-table-header">' + name + '\'s Fleet<h2>');
 	      var dashedName = name.split(" ").join("-");
 	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);

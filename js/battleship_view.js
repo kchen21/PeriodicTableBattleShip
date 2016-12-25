@@ -182,7 +182,7 @@ class BattleshipView {
   }
 
   setupPeriodicTable(name) {
-    this.$el.append(`<h2>${name}'s Fleet<h2>`);
+    this.$el.append(`<h2 class="periodic-table-header">${name}'s Fleet<h2>`);
     const dashedName = name.split(" ").join("-");
     this.$el.append(`<div id="periodic-table-${dashedName}" class="periodic-table"></div>`);
     const $periodicTable = this.$el.find(`#periodic-table-${dashedName}`);
