@@ -56,14 +56,21 @@ h1 {
     border: 1px solid white;
     box-sizing: border-box;
     text-align: center;
-    background: blue;
     padding: 20% 0;
     color: white;
 }
 
-.periodic-table > div > div:hover {
+.element-square {
+  background: blue;
+}
+
+.element-square:hover {
   cursor: pointer;
   opacity: 0.75;
+}
+
+.non-element-square {
+  background: #aaa;
 }
 
 .action {
@@ -71,8 +78,8 @@ h1 {
 }
 
 .legend {
-  margin: 8px 16px 8px 0;
-  text-align: right;
+  margin: 8px 0;
+  text-align: center;
 }
 
 .legend > label {
@@ -87,7 +94,7 @@ ul {
 
 li {
   display: inline-block;
-  width: 5.15%;
+  width: 5.2%;
   min-width: 36px;
   border: 1px solid white;
   box-sizing: border-box;

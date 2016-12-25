@@ -199,7 +199,7 @@
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
 	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('div');
+	      var $elements = $columns.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var game = this.game;
@@ -209,7 +209,7 @@
 	          var $element = $(event.currentTarget);
 	          var elementSymbol = $element.data('sym');
 	
-	          if ($element.html() === "-" || $element.hasClass('ship-part')) {
+	          if ($element.hasClass('ship-part')) {
 	            alert("You must place a ship on an element that has no ship!");
 	          } else {
 	            $element.addClass('ship-part');
@@ -233,7 +233,7 @@
 	
 	      var $periodicTable = this.$el.find('.periodic-table');
 	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('div');
+	      var $elements = $columns.find('.element-square');
 	
 	      $elements.each(function (index, element) {
 	        $(element).attr('style', 'background: blue');
@@ -263,7 +263,7 @@
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
 	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('div');
+	      var $elements = $columns.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
@@ -274,7 +274,7 @@
 	        var elementSymbol = $element.data('sym');
 	        var wasAttacked = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
 	
-	        if ($element.html() === "-" || wasAttacked) {
+	        if (wasAttacked) {
 	          alert("You must target an element that hasn't been targetted before!");
 	        } else {
 	          if ($element.hasClass('ship-part')) {
@@ -303,7 +303,7 @@
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
 	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('div');
+	      var $elements = $columns.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var legalTargetFound = false;
@@ -311,7 +311,7 @@
 	      while (!legalTargetFound) {
 	        var $randomElement = $elements.random();
 	
-	        if (!$randomElement.hasClass('targetted') && $randomElement.html() !== "-") {
+	        if (!$randomElement.hasClass('targetted')) {
 	          var randomElementSymbol = $randomElement.data('sym');
 	
 	          $randomElement.addClass('targetted');
@@ -340,11 +340,11 @@
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
 	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('div');
+	      var $elements = $columns.find('.element-square');
 	
 	      while (this.game.computerShipCount < 17) {
 	        var $randomElement = $elements.random();
-	        if (!$randomElement.hasClass('ship-part') && $randomElement.html() !== "-") {
+	        if (!$randomElement.hasClass('ship-part')) {
 	          $randomElement.addClass('ship-part');
 	          this.game.computerShipCount += 1;
 	        }
@@ -381,6 +381,13 @@
 	        var $element = $('<div>' + el + '</div>');
 	        $element.data('pos', [Math.floor(idx / 18), idx % 18]);
 	        $element.data('sym', el);
+	
+	        if (el === "-") {
+	          $element.addClass('non-element-square');
+	        } else {
+	          $element.addClass('element-square');
+	        }
+	
 	        $column.append($element);
 	      });
 	
