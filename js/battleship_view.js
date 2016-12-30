@@ -33,8 +33,7 @@ class BattleshipView {
     const dashedHumanName = humanName.split(" ").join("-");
 
     const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('.element-square');
+    const $elements = $periodicTable.find('.element-square');
     const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
 
     const game = this.game;
@@ -44,10 +43,10 @@ class BattleshipView {
         const $element = $(event.currentTarget);
         const elementSymbol = $element.data('sym');
 
-        if ($element.hasClass('ship-part')) {
+        if ($element.hasClass('ship')) {
           alert("You must place a ship on an element that has no ship!");
         } else {
-          $element.addClass('ship-part');
+          $element.addClass('ship');
           $element.attr('style', 'background: black');
           game.humanShipCount += 1;
           $selectedElementInfo.empty();
@@ -65,9 +64,7 @@ class BattleshipView {
   hideShips() {
     alert(`Let the games begin! During each round, select an element on ${this.game.getComputerName()}'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent's ships first wins!`);
 
-    const $periodicTable = this.$el.find('.periodic-table');
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('.element-square');
+    const $elements = this.$el.find('.element-square');
 
     $elements.each( (index, element) => {
       $(element).attr('style', 'background: blue');
@@ -94,8 +91,7 @@ class BattleshipView {
     const dashedComputerName = computerName.split(" ").join("-");
 
     const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('.element-square');
+    const $elements = $periodicTable.find('.element-square');
     const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
@@ -104,12 +100,12 @@ class BattleshipView {
     $elements.on('click', (event) => {
       const $element = $(event.currentTarget);
       const elementSymbol = $element.data('sym');
-      const wasAttacked = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
+      const wasTargetted = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
 
-      if (wasAttacked) {
+      if (wasTargetted) {
         alert("You must target an element that hasn't been targetted before!");
       } else {
-        if ($element.hasClass('ship-part')) {
+        if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
           game.computerShipCount -= 1;
           console.log("You hit a ship!");
@@ -133,8 +129,7 @@ class BattleshipView {
     const dashedHumanName = humanName.split(" ").join("-");
 
     const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('.element-square');
+    const $elements = $periodicTable.find('.element-square');
     const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
 
     let legalTargetFound = false;
@@ -147,7 +142,7 @@ class BattleshipView {
 
         $randomElement.addClass('targetted');
 
-        if ($randomElement.hasClass('ship-part')) {
+        if ($randomElement.hasClass('ship')) {
           $randomElement.attr('style', 'background: green');
           this.game.humanShipCount -= 1;
         } else {
@@ -169,13 +164,12 @@ class BattleshipView {
     const dashedComputerName = computerName.split(" ").join("-");
 
     const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
-    const $columns = $periodicTable.find('div');
-    const $elements = $columns.find('.element-square');
+    const $elements = $periodicTable.find('.element-square');
 
     while (this.game.computerShipCount < 17) {
       const $randomElement = $elements.random();
-      if (!$randomElement.hasClass('ship-part')) {
-        $randomElement.addClass('ship-part');
+      if (!$randomElement.hasClass('ship')) {
+        $randomElement.addClass('ship');
         this.game.computerShipCount += 1;
       }
     }
@@ -208,7 +202,6 @@ class BattleshipView {
     PERIODIC_TABLE_ELEMENTS.forEach( (el, idx) => {
       const $column = $periodicTable.find(`.column-${idx % 18}`);
       let $element = $(`<div>${el}</div>`);
-      $element.data('pos', [Math.floor(idx / 18), (idx % 18)]);
       $element.data('sym', el);
 
       if (el === "-") {
