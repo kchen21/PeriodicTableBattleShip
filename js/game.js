@@ -1,19 +1,7 @@
-const Board = require('./board.js');
-const HumanPlayer = require('./human_player.js');
-const ComputerPlayer = require('./computer_player.js');
-
-// ships = {
-//   carrier: 5,
-//   battleship: 4,
-//   cruiser: 3,
-//   submarine: 3,
-//   destroyer: 2
-// }
+const Player = require('./player.js');
 
 class Game {
   constructor() {
-    this.humanBoard = new Board();
-    this.computerBoard = new Board();
     this.human = null;
     this.computer = null;
     this.humanShipCount = 0;
@@ -21,31 +9,15 @@ class Game {
     this.currentPlayer = "human";
   }
 
-  registerHumanShip(pos) {
-    this.humanBoard.registerShip(pos);
-  }
-
-  registerComputerShip(pos) {
-    this.computerBoard.registerShip(pos);
-  }
-
-  registerHitOnHuman(pos) {
-    this.humanBoard.registerHit(pos);
-  }
-
-  registerHitOnComputer(pos) {
-    this.computerBoard.registerHit(pos);
-  }
-
   setHumanName() {
     const humanName = prompt("Please enter your name", "Captain Jack Sparrow");
-    this.human = new HumanPlayer(humanName);
+    this.human = new Player(humanName);
     return humanName;
   }
 
   setComputerName() {
     const computerName = prompt("Please give the computer a name", "Captain Hector Barbossa");
-    this.computer = new ComputerPlayer(computerName);
+    this.computer = new Player(computerName);
     return computerName;
   }
 
@@ -56,20 +28,6 @@ class Game {
   getComputerName() {
     return this.computer.name;
   }
-
-  // run() {
-  //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
-  //   const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
-  //   const p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
-  //   const p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
-  //   const p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
-  //   this.board.generateShip(p1CarrierEndpoints);
-  //   this.board.generateShip(p1BattleshipEndpoints);
-  //   this.board.generateShip(p1CruiserEndpoints);
-  //   this.board.generateShip(p1SubmarineEndpoints);
-  //   this.board.generateShip(p1DestroyerEndpoints);
-  //
-  // }
 }
 
 module.exports = Game;

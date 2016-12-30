@@ -1,7 +1,7 @@
-class HumanPlayer {
+class Player {
   constructor(name) {
     this.name = name;
   }
 }
 
-module.exports = HumanPlayer;
+module.exports = Player;
