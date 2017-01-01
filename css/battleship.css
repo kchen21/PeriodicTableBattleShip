@@ -35,6 +35,24 @@ h1 {
   height: 48px;
 }
 
+.external-links {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-weight: bold;
+}
+
+.external-links > a {
+  float: left;
+  text-decoration: underline;
+  padding: 6px 12px 6px 0;
+}
+
+.external-links > a:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
 .periodic-table-header {
   margin-top: 24px;
   font-size: 24px;
