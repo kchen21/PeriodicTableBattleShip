@@ -22,12 +22,11 @@ class BattleshipView {
     this.game = game;
     this.$el = $el;
 
-    this.setupBoard();
-    this.setupEvents();
+    this.setupForm();
   }
 
   setupEvents() {
-    alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
+    // alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
 
     const humanName = this.game.getHumanName();
     const dashedHumanName = humanName.split(" ").join("-");
@@ -58,6 +57,29 @@ class BattleshipView {
         this.hideShips();
         this.targetComputerTableElement();
       }
+    });
+  }
+
+  setupForm() {
+    this.$el.append('<form class="names"></form>');
+
+    const $names = this.$el.find(".names");
+
+    $names.append('<p>Enter names for the following:</p>');
+    $names.append('<label for="human-name">Human Player</label>');
+    $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+    $names.append('<label for="computer-name">Computer Player</label>');
+    $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+    $names.append('<input class="submit-button" type="submit" value="Submit" />');
+
+    const self = this;
+
+    $names.submit((event) => {
+      event.preventDefault();
+      self.game.setHumanName($("#human-name")[0].value);
+      self.game.setComputerName($("#computer-name")[0].value);
+      self.setupBoard();
+      self.setupEvents();
     });
   }
 
@@ -176,7 +198,7 @@ class BattleshipView {
   }
 
   setupPeriodicTable(name) {
-    this.$el.append(`<h2 class="periodic-table-header">${name}'s Fleet<h2>`);
+    this.$el.append(`<h2 class="periodic-table-header">${name}'s Fleet</h2>`);
     const dashedName = name.split(" ").join("-");
     this.$el.append(`<div id="periodic-table-${dashedName}" class="periodic-table"></div>`);
     const $periodicTable = this.$el.find(`#periodic-table-${dashedName}`);
@@ -217,8 +239,8 @@ class BattleshipView {
   }
 
   setupBoard() {
-    this.setupPeriodicTable(this.game.setHumanName());
-    this.setupPeriodicTable(this.game.setComputerName());
+    this.setupPeriodicTable(this.game.getHumanName());
+    this.setupPeriodicTable(this.game.getComputerName());
     this.generateComputerShips();
   }
 }

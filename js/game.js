@@ -9,14 +9,12 @@ class Game {
     this.currentPlayer = "human";
   }
 
-  setHumanName() {
-    const humanName = prompt("Please enter your name", "Captain Jack Sparrow");
+  setHumanName(humanName) {
     this.human = new Player(humanName);
     return humanName;
   }
 
-  setComputerName() {
-    const computerName = prompt("Please give the computer a name", "Captain Hector Barbossa");
+  setComputerName(computerName) {
     this.computer = new Player(computerName);
     return computerName;
   }

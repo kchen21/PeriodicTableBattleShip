@@ -47,10 +47,9 @@
 	'use strict';
 	
 	var BattleshipGame = __webpack_require__(1);
-	var BattleshipView = __webpack_require__(2);
+	var BattleshipView = __webpack_require__(3);
 	
 	$(document).ready(function () {
-	  console.log("I'm running!");
 	  var rootEl = $('.pt-battleship');
 	  var game = new BattleshipGame();
 	  new BattleshipView(game, rootEl);
@@ -60,30 +59,18 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Board = __webpack_require__(4);
-	var HumanPlayer = __webpack_require__(6);
-	var ComputerPlayer = __webpack_require__(7);
-	
-	// ships = {
-	//   carrier: 5,
-	//   battleship: 4,
-	//   cruiser: 3,
-	//   submarine: 3,
-	//   destroyer: 2
-	// }
+	var Player = __webpack_require__(2);
 	
 	var Game = function () {
 	  function Game() {
 	    _classCallCheck(this, Game);
 	
-	    this.humanBoard = new Board();
-	    this.computerBoard = new Board();
 	    this.human = null;
 	    this.computer = null;
 	    this.humanShipCount = 0;
@@ -92,64 +79,27 @@
 	  }
 	
 	  _createClass(Game, [{
-	    key: 'registerHumanShip',
-	    value: function registerHumanShip(pos) {
-	      this.humanBoard.registerShip(pos);
-	    }
-	  }, {
-	    key: 'registerComputerShip',
-	    value: function registerComputerShip(pos) {
-	      this.computerBoard.registerShip(pos);
-	    }
-	  }, {
-	    key: 'registerHitOnHuman',
-	    value: function registerHitOnHuman(pos) {
-	      this.humanBoard.registerHit(pos);
-	    }
-	  }, {
-	    key: 'registerHitOnComputer',
-	    value: function registerHitOnComputer(pos) {
-	      this.computerBoard.registerHit(pos);
-	    }
-	  }, {
-	    key: 'setHumanName',
-	    value: function setHumanName() {
-	      var humanName = prompt("Please enter your name", "Captain Jack Sparrow");
-	      this.human = new HumanPlayer(humanName);
+	    key: "setHumanName",
+	    value: function setHumanName(humanName) {
+	      this.human = new Player(humanName);
 	      return humanName;
 	    }
 	  }, {
-	    key: 'setComputerName',
-	    value: function setComputerName() {
-	      var computerName = prompt("Please give the computer a name", "Captain Hector Barbossa");
-	      this.computer = new ComputerPlayer(computerName);
+	    key: "setComputerName",
+	    value: function setComputerName(computerName) {
+	      this.computer = new Player(computerName);
 	      return computerName;
 	    }
 	  }, {
-	    key: 'getHumanName',
+	    key: "getHumanName",
 	    value: function getHumanName() {
 	      return this.human.name;
 	    }
 	  }, {
-	    key: 'getComputerName',
+	    key: "getComputerName",
 	    value: function getComputerName() {
 	      return this.computer.name;
 	    }
-	
-	    // run() {
-	    //   const p1CarrierEndpoints = this.player1.promptShipPlacement('carrier'); // returns a 2D array of the form [headPos, tailPos]
-	    //   const p1BattleshipEndpoints = this.player1.promptShipPlacement('battleship');
-	    //   const p1CruiserEndpoints = this.player1.promptShipPlacement('cruiser');
-	    //   const p1SubmarineEndpoints = this.player1.promptShipPlacement('submarine');
-	    //   const p1DestroyerEndpoints = this.player1.promptShipPlacement('destroyer');
-	    //   this.board.generateShip(p1CarrierEndpoints);
-	    //   this.board.generateShip(p1BattleshipEndpoints);
-	    //   this.board.generateShip(p1CruiserEndpoints);
-	    //   this.board.generateShip(p1SubmarineEndpoints);
-	    //   this.board.generateShip(p1DestroyerEndpoints);
-	    //
-	    // }
-	
 	  }]);
 	
 	  return Game;
@@ -159,6 +109,22 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Player = function Player(name) {
+	  _classCallCheck(this, Player);
+	
+	  this.name = name;
+	};
+	
+	module.exports = Player;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -167,7 +133,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var ElementInfo = __webpack_require__(8);
+	var ElementInfo = __webpack_require__(4);
 	
 	$.fn.random = function () {
 	  // gets a random element from a selection returned by $(selector)
@@ -183,8 +149,7 @@
 	    this.game = game;
 	    this.$el = $el;
 	
-	    this.setupBoard();
-	    this.setupEvents();
+	    this.setupForm();
 	  }
 	
 	  _createClass(BattleshipView, [{
@@ -192,14 +157,13 @@
 	    value: function setupEvents() {
 	      var _this = this;
 	
-	      alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
+	      // alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
 	
 	      var humanName = this.game.getHumanName();
 	      var dashedHumanName = humanName.split(" ").join("-");
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
-	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('.element-square');
+	      var $elements = $periodicTable.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var game = this.game;
@@ -209,10 +173,10 @@
 	          var $element = $(event.currentTarget);
 	          var elementSymbol = $element.data('sym');
 	
-	          if ($element.hasClass('ship-part')) {
+	          if ($element.hasClass('ship')) {
 	            alert("You must place a ship on an element that has no ship!");
 	          } else {
-	            $element.addClass('ship-part');
+	            $element.addClass('ship');
 	            $element.attr('style', 'background: black');
 	            game.humanShipCount += 1;
 	            $selectedElementInfo.empty();
@@ -227,13 +191,35 @@
 	      });
 	    }
 	  }, {
+	    key: 'setupForm',
+	    value: function setupForm() {
+	      this.$el.append('<form class="names"></form>');
+	
+	      var $names = this.$el.find(".names");
+	
+	      $names.append('<p>Enter names for the following:</p>');
+	      $names.append('<label for="human-name">Human Player</label>');
+	      $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+	      $names.append('<label for="computer-name">Computer Player</label>');
+	      $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+	      $names.append('<input class="submit-button" type="submit" value="Submit" />');
+	
+	      var self = this;
+	
+	      $names.submit(function (event) {
+	        event.preventDefault();
+	        self.game.setHumanName($("#human-name")[0].value);
+	        self.game.setComputerName($("#computer-name")[0].value);
+	        self.setupBoard();
+	        self.setupEvents();
+	      });
+	    }
+	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
 	      alert('Let the games begin! During each round, select an element on ' + this.game.getComputerName() + '\'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
 	
-	      var $periodicTable = this.$el.find('.periodic-table');
-	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('.element-square');
+	      var $elements = this.$el.find('.element-square');
 	
 	      $elements.each(function (index, element) {
 	        $(element).attr('style', 'background: blue');
@@ -262,8 +248,7 @@
 	      var dashedComputerName = computerName.split(" ").join("-");
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
-	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('.element-square');
+	      var $elements = $periodicTable.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
@@ -272,12 +257,12 @@
 	      $elements.on('click', function (event) {
 	        var $element = $(event.currentTarget);
 	        var elementSymbol = $element.data('sym');
-	        var wasAttacked = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
+	        var wasTargetted = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
 	
-	        if (wasAttacked) {
+	        if (wasTargetted) {
 	          alert("You must target an element that hasn't been targetted before!");
 	        } else {
-	          if ($element.hasClass('ship-part')) {
+	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
 	            game.computerShipCount -= 1;
 	            console.log("You hit a ship!");
@@ -302,8 +287,7 @@
 	      var dashedHumanName = humanName.split(" ").join("-");
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
-	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('.element-square');
+	      var $elements = $periodicTable.find('.element-square');
 	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
 	
 	      var legalTargetFound = false;
@@ -316,7 +300,7 @@
 	
 	          $randomElement.addClass('targetted');
 	
-	          if ($randomElement.hasClass('ship-part')) {
+	          if ($randomElement.hasClass('ship')) {
 	            $randomElement.attr('style', 'background: green');
 	            this.game.humanShipCount -= 1;
 	          } else {
@@ -339,13 +323,12 @@
 	      var dashedComputerName = computerName.split(" ").join("-");
 	
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
-	      var $columns = $periodicTable.find('div');
-	      var $elements = $columns.find('.element-square');
+	      var $elements = $periodicTable.find('.element-square');
 	
 	      while (this.game.computerShipCount < 17) {
 	        var $randomElement = $elements.random();
-	        if (!$randomElement.hasClass('ship-part')) {
-	          $randomElement.addClass('ship-part');
+	        if (!$randomElement.hasClass('ship')) {
+	          $randomElement.addClass('ship');
 	          this.game.computerShipCount += 1;
 	        }
 	      }
@@ -353,7 +336,7 @@
 	  }, {
 	    key: 'setupPeriodicTable',
 	    value: function setupPeriodicTable(name) {
-	      this.$el.append('<h2 class="periodic-table-header">' + name + '\'s Fleet<h2>');
+	      this.$el.append('<h2 class="periodic-table-header">' + name + '\'s Fleet</h2>');
 	      var dashedName = name.split(" ").join("-");
 	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);
@@ -379,7 +362,6 @@
 	      PERIODIC_TABLE_ELEMENTS.forEach(function (el, idx) {
 	        var $column = $periodicTable.find('.column-' + idx % 18);
 	        var $element = $('<div>' + el + '</div>');
-	        $element.data('pos', [Math.floor(idx / 18), idx % 18]);
 	        $element.data('sym', el);
 	
 	        if (el === "-") {
@@ -396,8 +378,8 @@
 	  }, {
 	    key: 'setupBoard',
 	    value: function setupBoard() {
-	      this.setupPeriodicTable(this.game.setHumanName());
-	      this.setupPeriodicTable(this.game.setComputerName());
+	      this.setupPeriodicTable(this.game.getHumanName());
+	      this.setupPeriodicTable(this.game.getComputerName());
 	      this.generateComputerShips();
 	    }
 	  }]);
@@ -408,155 +390,7 @@
 	module.exports = BattleshipView;
 
 /***/ },
-/* 3 */,
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Ship = __webpack_require__(5);
-	
-	// ships = {
-	//   carrier: 5,
-	//   battleship: 4,
-	//   cruiser: 3,
-	//   submarine: 3,
-	//   destroyer: 2
-	// }
-	
-	var SHIP_PART = Symbol('shipPart');
-	var EMPTY_SQUARE = Symbol('emptySquare');
-	var DAMAGED_PART = Symbol('damagedPart');
-	
-	var Board = function () {
-	  function Board() {
-	    _classCallCheck(this, Board);
-	
-	    this.grid = new Array(new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18), new Array(18));
-	  }
-	
-	  _createClass(Board, [{
-	    key: 'registerShip',
-	    value: function registerShip(pos) {
-	      this.grid[pos[0]][pos[1]] = SHIP_PART;
-	      console.log('Ship registered at ' + pos);
-	    }
-	  }, {
-	    key: 'populateGrid',
-	    value: function populateGrid() {
-	      for (var xCoord = 0; xCoord < 9; xCoord++) {
-	        for (var yCoord = 0; yCoord < 18; yCoord++) {
-	          if (this.grid[xCoord][yCoord] !== SHIP_PART) {
-	            this.grid[xCoord][yCoord] = EMPTY_SQUARE;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'registerHit',
-	    value: function registerHit(pos) {
-	      this.grid[pos[0]][pos[1]] = DAMAGED_PART;
-	      console.log('Ship part at ' + pos + ' has been hit!');
-	    }
-	
-	    // generateShip(endpoints) { // endpoints is a 2D array of the form [headPos, tailPos]
-	    //   return new Ship(endpoints[0], endpoints[1]);
-	    // }
-	    //
-	    // populateGrid(ships) { // ships is an array of ship objects
-	    //   for (let xCoord = 0; xCoord < 9; xCoord++) {
-	    //     for (let yCoord = 0; yCoord < 18; yCoord++) {
-	    //       this.grid[xCoord][yCoord] = EMPTY_SPACE;
-	    //     }
-	    //   }
-	    //
-	    //   ships.forEach( (ship) => {
-	    //     if (ship.headPos[0] === ship.tailPos[0]) { // if the head and tail are in the same row
-	    //       for (let yCoord = ship.headPos[1]; yCoord <= ship.tailPos[1]; yCoord++) { // assumes the y-coordinate of the head is less than that of the tail
-	    //         this.grid[ship.headPos[0]][yCoord] = SHIP_PART;
-	    //       }
-	    //     } else if (ship.headPos[1] === ship.tailPos[1]) { // if the head and tail are in the same column
-	    //       for (let xCoord = ship.headPos[0]; xCoord <= ship.tailPPos[0]; xCoord++) { // assumes the x-coordinate of the head is less than that of the tail
-	    //         this.grid[xCoord][ship.headPos[1]] = SHIP_PART;
-	    //       }
-	    //     } else {
-	    //       console.log('Invalid ship headPos/tailPos combination provided');
-	    //     }
-	    //   });
-	    // }
-	    //
-	    // inRange(pos) {
-	    //   if (pos[0] > 8 || pos[1] > 17) {
-	    //     return false;
-	    //   }
-	    //
-	    //   return true;
-	    // }
-	
-	  }]);
-	
-	  return Board;
-	}();
-	
-	module.exports = Board;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Ship =
-	// Create a ship with a head position headPos and a tail pos of tailPos
-	function Ship(headPos, tailPos) {
-	  _classCallCheck(this, Ship);
-	
-	  this.headPos = headPos;
-	  this.tailPos = tailPos;
-	};
-	
-	module.exports = Ship;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var HumanPlayer = function HumanPlayer(name) {
-	  _classCallCheck(this, HumanPlayer);
-	
-	  this.name = name;
-	};
-	
-	module.exports = HumanPlayer;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var ComputerPlayer = function ComputerPlayer(name) {
-	  _classCallCheck(this, ComputerPlayer);
-	
-	  this.name = name;
-	};
-	
-	module.exports = ComputerPlayer;
-
-/***/ },
-/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
