@@ -187,6 +187,7 @@
 	    value: function setupBoard() {
 	      this.setupLegend();
 	      this.setupPeriodicTable(this.game.getHumanName());
+	      this.$el.append('<section class="messages"></section>');
 	      this.setupPeriodicTable(this.game.getComputerName());
 	      this.generateComputerShips();
 	    }
@@ -294,6 +295,7 @@
 	          $selectedElementInfo.empty();
 	          $elements.off('click');
 	          _this.hideShips();
+	          $('.messages').html('<p>Let the battle for control of the elements begin! Fire the first missile!</p>');
 	          _this.targetComputerTableElement();
 	        }
 	      });
@@ -301,8 +303,6 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert('Let the battling begin!');
-	
 	      var $elements = $('.element-square');
 	
 	      $elements.each(function (index, element) {
@@ -328,6 +328,8 @@
 	        var $element = $(event.currentTarget);
 	        var elementSymbol = $element.data('sym');
 	        var wasTargetted = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
+	
+	        $('.messages').empty();
 	
 	        if (wasTargetted) {
 	          $selectedElementInfo.empty();
@@ -398,9 +400,9 @@
 	          this.targetHumanTableElement();
 	        }
 	      } else if (this.game.humanShipCount === 0) {
-	        alert(this.game.getComputerName() + ' wins!');
+	        $('.messages').html('<p>' + this.game.getComputerName() + ' wins!</p>');
 	      } else if (this.game.computerShipCount === 0) {
-	        alert(this.game.getHumanName() + ' wins!');
+	        $('.messages').html('<p>' + this.game.getHumanName() + ' wins!</p>');
 	      }
 	    }
 	  }]);

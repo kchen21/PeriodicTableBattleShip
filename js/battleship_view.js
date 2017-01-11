@@ -56,6 +56,7 @@ class BattleshipView {
   setupBoard() {
     this.setupLegend();
     this.setupPeriodicTable(this.game.getHumanName());
+    this.$el.append('<section class="messages"></section>');
     this.setupPeriodicTable(this.game.getComputerName());
     this.generateComputerShips();
   }
@@ -157,14 +158,13 @@ class BattleshipView {
         $selectedElementInfo.empty();
         $elements.off('click');
         this.hideShips();
+        $('.messages').html('<p>Let the battle for control of the elements begin! Fire the first missile!</p>');
         this.targetComputerTableElement();
       }
     });
   }
 
   hideShips() {
-    alert('Let the battling begin!');
-
     const $elements = $('.element-square');
 
     $elements.each( (index, element) => {
@@ -189,6 +189,8 @@ class BattleshipView {
       const $element = $(event.currentTarget);
       const elementSymbol = $element.data('sym');
       const wasTargetted = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
+
+      $('.messages').empty();
 
       if (wasTargetted) {
         $selectedElementInfo.empty();
@@ -257,9 +259,9 @@ class BattleshipView {
         this.targetHumanTableElement();
       }
     } else if (this.game.humanShipCount === 0) {
-      alert(`${this.game.getComputerName()} wins!`);
+      $('.messages').html(`<p>${this.game.getComputerName()} wins!</p>`);
     } else if (this.game.computerShipCount === 0) {
-      alert(`${this.game.getHumanName()} wins!`);
+      $('.messages').html(`<p>${this.game.getHumanName()} wins!</p>`);
     }
   }
 }
