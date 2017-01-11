@@ -18,7 +18,8 @@ button, article, footer, small {
 }
 
 body {
-  margin: 8px;
+  /*margin: 8px;*/
+  padding: 16px 8px;
   background: #00008B;
   font-family: serif;
   color: white;
@@ -76,6 +77,10 @@ h1 {
     text-align: center;
     padding: 20% 0;
     color: white;
+}
+
+p[class^="selected-element-info-"] {
+  margin-bottom: 24px;
 }
 
 .element-square {

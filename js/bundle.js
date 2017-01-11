@@ -183,6 +183,83 @@
 	      $('.names').remove();
 	    }
 	  }, {
+	    key: 'setupBoard',
+	    value: function setupBoard() {
+	      this.setupLegend();
+	      this.setupPeriodicTable(this.game.getHumanName());
+	      this.setupPeriodicTable(this.game.getComputerName());
+	      this.generateComputerShips();
+	    }
+	  }, {
+	    key: 'setupLegend',
+	    value: function setupLegend() {
+	      this.$el.append('<section class="legend"></section>');
+	      $('.legend').append('<label for="legend-icons">Legend:</label>');
+	      $('.legend').append('<ul id="legend-icons"></ul>');
+	      $('#legend-icons').append('<li class="hit-icon">Hit</li>');
+	      $('#legend-icons').append('<li class="miss-icon">Miss</li>');
+	    }
+	  }, {
+	    key: 'setupPeriodicTable',
+	    value: function setupPeriodicTable(name) {
+	      this.$el.append('<h2 class="periodic-table-header">' + name + '\'s Fleet</h2>');
+	      var dashedName = name.split(" ").join("-");
+	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
+	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);
+	      $periodicTable.append('<div class="column-0"></div>');
+	      $periodicTable.append('<div class="column-1"></div>');
+	      $periodicTable.append('<div class="column-2"></div>');
+	      $periodicTable.append('<div class="column-3"></div>');
+	      $periodicTable.append('<div class="column-4"></div>');
+	      $periodicTable.append('<div class="column-5"></div>');
+	      $periodicTable.append('<div class="column-6"></div>');
+	      $periodicTable.append('<div class="column-7"></div>');
+	      $periodicTable.append('<div class="column-8"></div>');
+	      $periodicTable.append('<div class="column-9"></div>');
+	      $periodicTable.append('<div class="column-10"></div>');
+	      $periodicTable.append('<div class="column-11"></div>');
+	      $periodicTable.append('<div class="column-12"></div>');
+	      $periodicTable.append('<div class="column-13"></div>');
+	      $periodicTable.append('<div class="column-14"></div>');
+	      $periodicTable.append('<div class="column-15"></div>');
+	      $periodicTable.append('<div class="column-16"></div>');
+	      $periodicTable.append('<div class="column-17"></div>');
+	
+	      PERIODIC_TABLE_ELEMENTS.forEach(function (el, idx) {
+	        var $column = $periodicTable.find('.column-' + idx % 18);
+	        var $element = $('<div>' + el + '</div>');
+	        $element.data('sym', el);
+	
+	        if (el === "-") {
+	          $element.addClass('non-element-square');
+	        } else {
+	          $element.addClass('element-square');
+	        }
+	
+	        $column.append($element);
+	      });
+	
+	      this.$el.append('<p class="errors-' + dashedName + '"></p>');
+	      this.$el.append('<p class="selected-element-info-' + dashedName + '"></p>');
+	    }
+	  }, {
+	    key: 'generateComputerShips',
+	    value: function generateComputerShips() {
+	      var computerName = this.game.getComputerName();
+	      var dashedComputerName = computerName.split(" ").join("-");
+	
+	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
+	      var $elements = $periodicTable.find('.element-square');
+	
+	      while (this.game.computerShipCount < 17) {
+	        var $randomElement = $elements.random();
+	        if (!$randomElement.hasClass('ship')) {
+	          $randomElement.addClass('ship');
+	          this.game.computerShipCount += 1;
+	        }
+	      }
+	    }
+	  }, {
 	    key: 'setupEvents',
 	    value: function setupEvents() {
 	      var _this = this;
@@ -231,21 +308,6 @@
 	      $elements.each(function (index, element) {
 	        $(element).attr('style', 'background: blue');
 	      });
-	    }
-	  }, {
-	    key: 'battle',
-	    value: function battle() {
-	      if (this.game.humanShipCount > 0 && this.game.computerShipCount > 0) {
-	        if (this.game.currentPlayer === "human") {
-	          this.targetComputerTableElement();
-	        } else if (this.game.currentPlayer === "computer") {
-	          this.targetHumanTableElement();
-	        }
-	      } else if (this.game.humanShipCount === 0) {
-	        alert(this.game.getComputerName() + ' wins!');
-	      } else if (this.game.computerShipCount === 0) {
-	        alert(this.game.getHumanName() + ' wins!');
-	      }
 	    }
 	  }, {
 	    key: 'targetComputerTableElement',
@@ -327,81 +389,19 @@
 	      this.battle();
 	    }
 	  }, {
-	    key: 'generateComputerShips',
-	    value: function generateComputerShips() {
-	      var computerName = this.game.getComputerName();
-	      var dashedComputerName = computerName.split(" ").join("-");
-	
-	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
-	      var $elements = $periodicTable.find('.element-square');
-	
-	      while (this.game.computerShipCount < 17) {
-	        var $randomElement = $elements.random();
-	        if (!$randomElement.hasClass('ship')) {
-	          $randomElement.addClass('ship');
-	          this.game.computerShipCount += 1;
+	    key: 'battle',
+	    value: function battle() {
+	      if (this.game.humanShipCount > 0 && this.game.computerShipCount > 0) {
+	        if (this.game.currentPlayer === "human") {
+	          this.targetComputerTableElement();
+	        } else if (this.game.currentPlayer === "computer") {
+	          this.targetHumanTableElement();
 	        }
+	      } else if (this.game.humanShipCount === 0) {
+	        alert(this.game.getComputerName() + ' wins!');
+	      } else if (this.game.computerShipCount === 0) {
+	        alert(this.game.getHumanName() + ' wins!');
 	      }
-	    }
-	  }, {
-	    key: 'setupPeriodicTable',
-	    value: function setupPeriodicTable(name) {
-	      this.$el.append('<h2 class="periodic-table-header">' + name + '\'s Fleet</h2>');
-	      var dashedName = name.split(" ").join("-");
-	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
-	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);
-	      $periodicTable.append('<div class="column-0"></div>');
-	      $periodicTable.append('<div class="column-1"></div>');
-	      $periodicTable.append('<div class="column-2"></div>');
-	      $periodicTable.append('<div class="column-3"></div>');
-	      $periodicTable.append('<div class="column-4"></div>');
-	      $periodicTable.append('<div class="column-5"></div>');
-	      $periodicTable.append('<div class="column-6"></div>');
-	      $periodicTable.append('<div class="column-7"></div>');
-	      $periodicTable.append('<div class="column-8"></div>');
-	      $periodicTable.append('<div class="column-9"></div>');
-	      $periodicTable.append('<div class="column-10"></div>');
-	      $periodicTable.append('<div class="column-11"></div>');
-	      $periodicTable.append('<div class="column-12"></div>');
-	      $periodicTable.append('<div class="column-13"></div>');
-	      $periodicTable.append('<div class="column-14"></div>');
-	      $periodicTable.append('<div class="column-15"></div>');
-	      $periodicTable.append('<div class="column-16"></div>');
-	      $periodicTable.append('<div class="column-17"></div>');
-	
-	      PERIODIC_TABLE_ELEMENTS.forEach(function (el, idx) {
-	        var $column = $periodicTable.find('.column-' + idx % 18);
-	        var $element = $('<div>' + el + '</div>');
-	        $element.data('sym', el);
-	
-	        if (el === "-") {
-	          $element.addClass('non-element-square');
-	        } else {
-	          $element.addClass('element-square');
-	        }
-	
-	        $column.append($element);
-	      });
-	
-	      this.$el.append('<p class="errors-' + dashedName + '"></p>');
-	      this.$el.append('<p class="selected-element-info-' + dashedName + '"></p>');
-	    }
-	  }, {
-	    key: 'setupLegend',
-	    value: function setupLegend() {
-	      this.$el.append('<section class="legend"></section>');
-	      $('.legend').append('<label for="legend-icons">Legend:</label>');
-	      $('.legend').append('<ul id="legend-icons"></ul>');
-	      $('#legend-icons').append('<li class="hit-icon">Hit</li>');
-	      $('#legend-icons').append('<li class="miss-icon">Miss</li>');
-	    }
-	  }, {
-	    key: 'setupBoard',
-	    value: function setupBoard() {
-	      this.setupLegend();
-	      this.setupPeriodicTable(this.game.getHumanName());
-	      this.setupPeriodicTable(this.game.getComputerName());
-	      this.generateComputerShips();
 	    }
 	  }]);
 	
