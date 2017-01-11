@@ -25,15 +25,41 @@ class BattleshipView {
     this.setupForm();
   }
 
-  setupEvents() {
-    // alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
+  setupForm() {
+    this.$el.append('<form class="names"></form>');
 
+    const $names = this.$el.find(".names");
+
+    $names.append('<p>Enter names for the following:</p>');
+    $names.append('<label for="human-name">Human Player</label>');
+    $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+    $names.append('<label for="computer-name">Computer Player</label>');
+    $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+    $names.append('<input class="submit-button" type="submit" value="Submit" />');
+
+    const self = this;
+
+    $names.submit((event) => {
+      event.preventDefault();
+      self.game.setHumanName($("#human-name")[0].value);
+      self.game.setComputerName($("#computer-name")[0].value);
+      self.removeForm();
+      self.setupBoard();
+      self.setupEvents();
+    });
+  }
+
+  removeForm() {
+    $('.names').remove();
+  }
+
+  setupEvents() {
     const humanName = this.game.getHumanName();
     const dashedHumanName = humanName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
+    const $periodicTable = $(`#periodic-table-${dashedHumanName}`);
     const $elements = $periodicTable.find('.element-square');
-    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
+    const $selectedElementInfo = $(`.selected-element-info-${dashedHumanName}`);
 
     const game = this.game;
 
@@ -60,33 +86,10 @@ class BattleshipView {
     });
   }
 
-  setupForm() {
-    this.$el.append('<form class="names"></form>');
-
-    const $names = this.$el.find(".names");
-
-    $names.append('<p>Enter names for the following:</p>');
-    $names.append('<label for="human-name">Human Player</label>');
-    $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
-    $names.append('<label for="computer-name">Computer Player</label>');
-    $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
-    $names.append('<input class="submit-button" type="submit" value="Submit" />');
-
-    const self = this;
-
-    $names.submit((event) => {
-      event.preventDefault();
-      self.game.setHumanName($("#human-name")[0].value);
-      self.game.setComputerName($("#computer-name")[0].value);
-      self.setupBoard();
-      self.setupEvents();
-    });
-  }
-
   hideShips() {
-    alert(`Let the games begin! During each round, select an element on ${this.game.getComputerName()}'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent's ships first wins!`);
+    alert('Let the battle begin!');
 
-    const $elements = this.$el.find('.element-square');
+    const $elements = $('.element-square');
 
     $elements.each( (index, element) => {
       $(element).attr('style', 'background: blue');
@@ -112,9 +115,9 @@ class BattleshipView {
     const computerName = this.game.getComputerName();
     const dashedComputerName = computerName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
+    const $periodicTable = $(`#periodic-table-${dashedComputerName}`);
     const $elements = $periodicTable.find('.element-square');
-    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedComputerName}`);
+    const $selectedElementInfo = $(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
     const battle = this.battle.bind(this);
@@ -150,9 +153,9 @@ class BattleshipView {
     const computerName = this.game.getComputerName();
     const dashedHumanName = humanName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${dashedHumanName}`);
+    const $periodicTable = $(`#periodic-table-${dashedHumanName}`);
     const $elements = $periodicTable.find('.element-square');
-    const $selectedElementInfo = this.$el.find(`.selected-element-info-${dashedHumanName}`);
+    const $selectedElementInfo = $(`.selected-element-info-${dashedHumanName}`);
 
     let legalTargetFound = false;
 
@@ -185,7 +188,7 @@ class BattleshipView {
     const computerName = this.game.getComputerName();
     const dashedComputerName = computerName.split(" ").join("-");
 
-    const $periodicTable = this.$el.find(`#periodic-table-${dashedComputerName}`);
+    const $periodicTable = $(`#periodic-table-${dashedComputerName}`);
     const $elements = $periodicTable.find('.element-square');
 
     while (this.game.computerShipCount < 17) {
@@ -238,7 +241,16 @@ class BattleshipView {
     this.$el.append(`<p class="selected-element-info-${dashedName}"></p>`);
   }
 
+  setupLegend() {
+    this.$el.append('<section class="legend"></section>');
+    $('.legend').append('<label for="legend-icons">Legend:</label>');
+    $('.legend').append('<ul id="legend-icons"></ul>');
+    $('#legend-icons').append('<li class="hit-icon">Hit</li>');
+    $('#legend-icons').append('<li class="miss-icon">Miss</li>');
+  }
+
   setupBoard() {
+    this.setupLegend();
     this.setupPeriodicTable(this.game.getHumanName());
     this.setupPeriodicTable(this.game.getComputerName());
     this.generateComputerShips();

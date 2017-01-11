@@ -153,18 +153,46 @@
 	  }
 	
 	  _createClass(BattleshipView, [{
+	    key: 'setupForm',
+	    value: function setupForm() {
+	      this.$el.append('<form class="names"></form>');
+	
+	      var $names = this.$el.find(".names");
+	
+	      $names.append('<p>Enter names for the following:</p>');
+	      $names.append('<label for="human-name">Human Player</label>');
+	      $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+	      $names.append('<label for="computer-name">Computer Player</label>');
+	      $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+	      $names.append('<input class="submit-button" type="submit" value="Submit" />');
+	
+	      var self = this;
+	
+	      $names.submit(function (event) {
+	        event.preventDefault();
+	        self.game.setHumanName($("#human-name")[0].value);
+	        self.game.setComputerName($("#computer-name")[0].value);
+	        self.removeForm();
+	        self.setupBoard();
+	        self.setupEvents();
+	      });
+	    }
+	  }, {
+	    key: 'removeForm',
+	    value: function removeForm() {
+	      $('.names').remove();
+	    }
+	  }, {
 	    key: 'setupEvents',
 	    value: function setupEvents() {
 	      var _this = this;
 	
-	      // alert("Place ships on 17 different elements of the Periodic Table and then click on a random element to begin battling!");
-	
 	      var humanName = this.game.getHumanName();
 	      var dashedHumanName = humanName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
+	      var $periodicTable = $('#periodic-table-' + dashedHumanName);
 	      var $elements = $periodicTable.find('.element-square');
-	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
+	      var $selectedElementInfo = $('.selected-element-info-' + dashedHumanName);
 	
 	      var game = this.game;
 	
@@ -191,35 +219,11 @@
 	      });
 	    }
 	  }, {
-	    key: 'setupForm',
-	    value: function setupForm() {
-	      this.$el.append('<form class="names"></form>');
-	
-	      var $names = this.$el.find(".names");
-	
-	      $names.append('<p>Enter names for the following:</p>');
-	      $names.append('<label for="human-name">Human Player</label>');
-	      $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
-	      $names.append('<label for="computer-name">Computer Player</label>');
-	      $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
-	      $names.append('<input class="submit-button" type="submit" value="Submit" />');
-	
-	      var self = this;
-	
-	      $names.submit(function (event) {
-	        event.preventDefault();
-	        self.game.setHumanName($("#human-name")[0].value);
-	        self.game.setComputerName($("#computer-name")[0].value);
-	        self.setupBoard();
-	        self.setupEvents();
-	      });
-	    }
-	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert('Let the games begin! During each round, select an element on ' + this.game.getComputerName() + '\'s table to launch a missile at it. He/She will do the same. Whomever sinks all of his/her opponent\'s ships first wins!');
+	      alert('Let the battle begin!');
 	
-	      var $elements = this.$el.find('.element-square');
+	      var $elements = $('.element-square');
 	
 	      $elements.each(function (index, element) {
 	        $(element).attr('style', 'background: blue');
@@ -247,9 +251,9 @@
 	      var computerName = this.game.getComputerName();
 	      var dashedComputerName = computerName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
+	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
 	      var $elements = $periodicTable.find('.element-square');
-	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedComputerName);
+	      var $selectedElementInfo = $('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
 	      var battle = this.battle.bind(this);
@@ -286,9 +290,9 @@
 	      var computerName = this.game.getComputerName();
 	      var dashedHumanName = humanName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + dashedHumanName);
+	      var $periodicTable = $('#periodic-table-' + dashedHumanName);
 	      var $elements = $periodicTable.find('.element-square');
-	      var $selectedElementInfo = this.$el.find('.selected-element-info-' + dashedHumanName);
+	      var $selectedElementInfo = $('.selected-element-info-' + dashedHumanName);
 	
 	      var legalTargetFound = false;
 	
@@ -322,7 +326,7 @@
 	      var computerName = this.game.getComputerName();
 	      var dashedComputerName = computerName.split(" ").join("-");
 	
-	      var $periodicTable = this.$el.find('#periodic-table-' + dashedComputerName);
+	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
 	      var $elements = $periodicTable.find('.element-square');
 	
 	      while (this.game.computerShipCount < 17) {
@@ -376,8 +380,18 @@
 	      this.$el.append('<p class="selected-element-info-' + dashedName + '"></p>');
 	    }
 	  }, {
+	    key: 'setupLegend',
+	    value: function setupLegend() {
+	      this.$el.append('<section class="legend"></section>');
+	      $('.legend').append('<label for="legend-icons">Legend:</label>');
+	      $('.legend').append('<ul id="legend-icons"></ul>');
+	      $('#legend-icons').append('<li class="hit-icon">Hit</li>');
+	      $('#legend-icons').append('<li class="miss-icon">Miss</li>');
+	    }
+	  }, {
 	    key: 'setupBoard',
 	    value: function setupBoard() {
+	      this.setupLegend();
 	      this.setupPeriodicTable(this.game.getHumanName());
 	      this.setupPeriodicTable(this.game.getComputerName());
 	      this.generateComputerShips();

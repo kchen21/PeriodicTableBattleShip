@@ -104,13 +104,13 @@ h1 {
   font-weight: bold;
 }
 
-ul {
+#legend-icons {
   list-style: none;
   display: inline;
   padding: 0;
 }
 
-li {
+.hit-icon, .miss-icon {
   display: inline-block;
   width: 5.2%;
   min-width: 36px;
