@@ -112,13 +112,14 @@ h1 {
 
 .hit-icon, .miss-icon {
   display: inline-block;
-  width: 5.2%;
+  width: 5.5%;
   min-width: 36px;
   border: 1px solid white;
   box-sizing: border-box;
   text-align: center;
   color: white;
-  padding: 1% 0;
+  margin-left: 5px;
+  padding: 1.1% 0;
 }
 
 .hit-icon {
