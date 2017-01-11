@@ -59,6 +59,7 @@ class BattleshipView {
 
     const $periodicTable = $(`#periodic-table-${dashedHumanName}`);
     const $elements = $periodicTable.find('.element-square');
+    const $errors = $(`.errors-${dashedHumanName}`);
     const $selectedElementInfo = $(`.selected-element-info-${dashedHumanName}`);
 
     const game = this.game;
@@ -69,8 +70,10 @@ class BattleshipView {
         const elementSymbol = $element.data('sym');
 
         if ($element.hasClass('ship')) {
-          alert("You must place a ship on an element that has no ship!");
+          $selectedElementInfo.empty();
+          $errors.html(`<section class="ship-placement-error">You must place a ship on an element that has no ship!</section>`);
         } else {
+          $errors.empty();
           $element.addClass('ship');
           $element.attr('style', 'background: black');
           game.humanShipCount += 1;
@@ -87,7 +90,7 @@ class BattleshipView {
   }
 
   hideShips() {
-    alert('Let the battle begin!');
+    alert('Let the battling begin!');
 
     const $elements = $('.element-square');
 
@@ -117,6 +120,7 @@ class BattleshipView {
 
     const $periodicTable = $(`#periodic-table-${dashedComputerName}`);
     const $elements = $periodicTable.find('.element-square');
+    const $errors = $(`.errors-${dashedComputerName}`);
     const $selectedElementInfo = $(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
@@ -128,8 +132,10 @@ class BattleshipView {
       const wasTargetted = ($element.attr('style') === 'background: green') || ($element.attr('style') === 'background: red');
 
       if (wasTargetted) {
-        alert("You must target an element that hasn't been targetted before!");
+        $selectedElementInfo.empty();
+        $errors.html('<section class="targetting-error">You must target an element that hasn\'t been targetted before.</section>')
       } else {
+        $errors.empty();
         if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
           game.computerShipCount -= 1;
@@ -238,6 +244,7 @@ class BattleshipView {
       $column.append($element);
     });
 
+    this.$el.append(`<p class="errors-${dashedName}"></p>`);
     this.$el.append(`<p class="selected-element-info-${dashedName}"></p>`);
   }
 

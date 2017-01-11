@@ -192,6 +192,7 @@
 	
 	      var $periodicTable = $('#periodic-table-' + dashedHumanName);
 	      var $elements = $periodicTable.find('.element-square');
+	      var $errors = $('.errors-' + dashedHumanName);
 	      var $selectedElementInfo = $('.selected-element-info-' + dashedHumanName);
 	
 	      var game = this.game;
@@ -202,8 +203,10 @@
 	          var elementSymbol = $element.data('sym');
 	
 	          if ($element.hasClass('ship')) {
-	            alert("You must place a ship on an element that has no ship!");
+	            $selectedElementInfo.empty();
+	            $errors.html('<section class="ship-placement-error">You must place a ship on an element that has no ship!</section>');
 	          } else {
+	            $errors.empty();
 	            $element.addClass('ship');
 	            $element.attr('style', 'background: black');
 	            game.humanShipCount += 1;
@@ -221,7 +224,7 @@
 	  }, {
 	    key: 'hideShips',
 	    value: function hideShips() {
-	      alert('Let the battle begin!');
+	      alert('Let the battling begin!');
 	
 	      var $elements = $('.element-square');
 	
@@ -253,6 +256,7 @@
 	
 	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
 	      var $elements = $periodicTable.find('.element-square');
+	      var $errors = $('.errors-' + dashedComputerName);
 	      var $selectedElementInfo = $('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
@@ -264,8 +268,10 @@
 	        var wasTargetted = $element.attr('style') === 'background: green' || $element.attr('style') === 'background: red';
 	
 	        if (wasTargetted) {
-	          alert("You must target an element that hasn't been targetted before!");
+	          $selectedElementInfo.empty();
+	          $errors.html('<section class="targetting-error">You must target an element that hasn\'t been targetted before.</section>');
 	        } else {
+	          $errors.empty();
 	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
 	            game.computerShipCount -= 1;
@@ -377,6 +383,7 @@
 	        $column.append($element);
 	      });
 	
+	      this.$el.append('<p class="errors-' + dashedName + '"></p>');
 	      this.$el.append('<p class="selected-element-info-' + dashedName + '"></p>');
 	    }
 	  }, {
