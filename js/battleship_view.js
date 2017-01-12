@@ -203,10 +203,8 @@ class BattleshipView {
         if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
           game.computerShipCount -= 1;
-          console.log("You hit a ship!");
         } else {
           $element.attr('style', 'background: red');
-          console.log('You missed!');
         }
 
         $selectedElementInfo.empty();
