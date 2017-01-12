@@ -22,11 +22,12 @@
       <a href="https://www.linkedin.com/in/kchen21">LinkedIn</a>
     </section>
 
+    <p>Welcome to Periodic Table Battleship! You will be facing off
+      against a computer in a classic game of Battleship
+      with an educational twist! Follow the instructions below
+      to discover what it is!</p>
+
     <section class="instructions">
-      <p>Welcome to Periodic Table Battleship! You will be facing off
-        against a computer in a classic game of Battleship
-        with an educational twist! Follow the instructions below
-        to discover what it is!</p>
       <label for="game-instructions">Game Instructions</label>
       <ol id="game-instructions">
         <li>Enter names for yourself and the computer below, in addition to the initial number of ships in each player's fleet. Defaults are provided.</li>
@@ -34,10 +35,14 @@
         <li>Click on an element of <b>your</b> Periodic Table to hide a ship within it. Repeat until your fleet's ships have all been positioned, and then click on an element square to begin battling.</li>
         <li>During each round, select an element square on the computer's Periodic Table
           to launch a missile at it. The computer will then counter-attack.</li>
-        <li>Element sqaures will turn green to indicate a 'Hit' and red to indicate a 'Miss'.
+        <li>Element squares will turn green to indicate a 'Hit' and red to indicate a 'Miss'.
           Whomever sinks all of their opponent's ships first wins!</li>
       </ol>
     </section>
+
+    <form class="instructions-toggler">
+      <input type="submit" value="Show/Hide Instructions">
+    </form>
 
     <figure class="pt-battleship"></figure>
   </body>

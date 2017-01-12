@@ -156,10 +156,19 @@
 	    this.game = game;
 	    this.$el = $el;
 	
+	    this.toggleInstructions();
 	    this.setupForm();
 	  }
 	
 	  _createClass(BattleshipView, [{
+	    key: 'toggleInstructions',
+	    value: function toggleInstructions() {
+	      $('.instructions-toggler > input').click(function (event) {
+	        event.preventDefault();
+	        $('.instructions').toggle();
+	      });
+	    }
+	  }, {
 	    key: 'setupForm',
 	    value: function setupForm() {
 	      this.$el.append('<form class="setup-form"></form>');
@@ -349,10 +358,8 @@
 	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
 	            game.computerShipCount -= 1;
-	            console.log("You hit a ship!");
 	          } else {
 	            $element.attr('style', 'background: red');
-	            console.log('You missed!');
 	          }
 	
 	          $selectedElementInfo.empty();

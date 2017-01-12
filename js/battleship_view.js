@@ -22,7 +22,15 @@ class BattleshipView {
     this.game = game;
     this.$el = $el;
 
+    this.toggleInstructions();
     this.setupForm();
+  }
+
+  toggleInstructions() {
+    $('.instructions-toggler > input').click((event) => {
+      event.preventDefault();
+      $('.instructions').toggle();
+    });
   }
 
   setupForm() {
