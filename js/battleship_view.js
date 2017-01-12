@@ -118,8 +118,9 @@ class BattleshipView {
       $column.append($element);
     });
 
-    this.$el.append(`<p class="errors-${dashedName}"></p>`);
-    this.$el.append(`<p class="selected-element-info-${dashedName}"></p>`);
+    this.$el.append(`<section class="select-messages-${dashedName}"></section>`)
+    $(`.select-messages-${dashedName}`).append(`<p class="errors-${dashedName}"></p>`);
+    $(`.select-messages-${dashedName}`).append(`<p class="selected-element-info-${dashedName}"></p>`);
   }
 
   generateComputerShips() {

@@ -120,7 +120,6 @@ body > p {
 /*Periodic Table*/
 
 .periodic-table-header {
-  margin-top: 24px;
   font-size: 24px;
   font-weight: bold;
 }
@@ -144,10 +143,6 @@ body > p {
     color: white;
 }
 
-p[class^="selected-element-info-"] {
-  margin-bottom: 24px;
-}
-
 .element-square {
   background: blue;
 }
@@ -161,10 +156,18 @@ p[class^="selected-element-info-"] {
   background: #aaa;
 }
 
+section[class^="select-messages-"] {
+  height: 100px;
+}
+
 p[class^="errors-"] {
   font-weight: bold;
   color: #ffb6c1;
 }
+
+/*p[class^="selected-element-info-"] {
+  margin-bottom: 24px;
+}*/
 
 .action {
   font-weight: bold;
