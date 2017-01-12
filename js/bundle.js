@@ -168,9 +168,9 @@
 	
 	      $setupForm.append('<p>Enter values for the following:</p>');
 	      $setupForm.append('<label for="human-name">Human Player Name</label>');
-	      $setupForm.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+	      $setupForm.append('<input id="human-name" type="text" value="Jack" />');
 	      $setupForm.append('<label for="computer-name">Computer Player Name</label>');
-	      $setupForm.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+	      $setupForm.append('<input id="computer-name" type="text" value="Hector" />');
 	      $setupForm.append('<label for="num-ships">Number of Ships</label>');
 	      $setupForm.append('<input id="num-ships" type="text" value="20" />');
 	      $setupForm.append('<input class="submit-button" type="submit" value="Submit" />');
