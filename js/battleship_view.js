@@ -26,23 +26,26 @@ class BattleshipView {
   }
 
   setupForm() {
-    this.$el.append('<form class="names"></form>');
+    this.$el.append('<form class="setup-form"></form>');
 
-    const $names = this.$el.find(".names");
+    const $setupForm = this.$el.find(".setup-form");
 
-    $names.append('<p>Enter names for the following:</p>');
-    $names.append('<label for="human-name">Human Player</label>');
-    $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
-    $names.append('<label for="computer-name">Computer Player</label>');
-    $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
-    $names.append('<input class="submit-button" type="submit" value="Submit" />');
+    $setupForm.append('<p>Enter values for the following:</p>');
+    $setupForm.append('<label for="human-name">Human Player Name</label>');
+    $setupForm.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+    $setupForm.append('<label for="computer-name">Computer Player Name</label>');
+    $setupForm.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+    $setupForm.append('<label for="num-ships">Number of Ships</label>');
+    $setupForm.append('<input id="num-ships" type="text" value="20" />');
+    $setupForm.append('<input class="submit-button" type="submit" value="Submit" />');
 
     const self = this;
 
-    $names.submit((event) => {
+    $setupForm.submit((event) => {
       event.preventDefault();
       self.game.setHumanName($("#human-name")[0].value);
       self.game.setComputerName($("#computer-name")[0].value);
+      self.game.setNumShips(parseInt($("#num-ships")[0].value));
       self.removeForm();
       self.setupBoard();
       self.setupEvents();
@@ -50,7 +53,7 @@ class BattleshipView {
   }
 
   removeForm() {
-    $('.names').remove();
+    $('.setup-form').remove();
   }
 
   setupBoard() {
@@ -118,7 +121,7 @@ class BattleshipView {
     const $periodicTable = $(`#periodic-table-${dashedComputerName}`);
     const $elements = $periodicTable.find('.element-square');
 
-    while (this.game.computerShipCount < 17) {
+    while (this.game.computerShipCount < this.game.numShips) {
       const $randomElement = $elements.random();
       if (!$randomElement.hasClass('ship')) {
         $randomElement.addClass('ship');
@@ -139,7 +142,7 @@ class BattleshipView {
     const game = this.game;
 
     $elements.on('click', (event) => {
-      if (game.humanShipCount < 17) {
+      if (game.humanShipCount < game.numShips) {
         const $element = $(event.currentTarget);
         const elementSymbol = $element.data('sym');
 

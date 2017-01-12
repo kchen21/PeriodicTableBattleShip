@@ -4,6 +4,7 @@ class Game {
   constructor() {
     this.human = null;
     this.computer = null;
+    this.numShips = null;
     this.humanShipCount = 0;
     this.computerShipCount = 0;
     this.currentPlayer = "human";
@@ -17,6 +18,11 @@ class Game {
   setComputerName(computerName) {
     this.computer = new Player(computerName);
     return computerName;
+  }
+
+  setNumShips(n) {
+    this.numShips = n;
+    return n;
   }
 
   getHumanName() {

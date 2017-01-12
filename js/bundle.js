@@ -73,6 +73,7 @@
 	
 	    this.human = null;
 	    this.computer = null;
+	    this.numShips = null;
 	    this.humanShipCount = 0;
 	    this.computerShipCount = 0;
 	    this.currentPlayer = "human";
@@ -89,6 +90,12 @@
 	    value: function setComputerName(computerName) {
 	      this.computer = new Player(computerName);
 	      return computerName;
+	    }
+	  }, {
+	    key: "setNumShips",
+	    value: function setNumShips(n) {
+	      this.numShips = n;
+	      return n;
 	    }
 	  }, {
 	    key: "getHumanName",
@@ -155,23 +162,26 @@
 	  _createClass(BattleshipView, [{
 	    key: 'setupForm',
 	    value: function setupForm() {
-	      this.$el.append('<form class="names"></form>');
+	      this.$el.append('<form class="setup-form"></form>');
 	
-	      var $names = this.$el.find(".names");
+	      var $setupForm = this.$el.find(".setup-form");
 	
-	      $names.append('<p>Enter names for the following:</p>');
-	      $names.append('<label for="human-name">Human Player</label>');
-	      $names.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
-	      $names.append('<label for="computer-name">Computer Player</label>');
-	      $names.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
-	      $names.append('<input class="submit-button" type="submit" value="Submit" />');
+	      $setupForm.append('<p>Enter values for the following:</p>');
+	      $setupForm.append('<label for="human-name">Human Player Name</label>');
+	      $setupForm.append('<input id="human-name" type="text" value="Captain Jack Sparrow" />');
+	      $setupForm.append('<label for="computer-name">Computer Player Name</label>');
+	      $setupForm.append('<input id="computer-name" type="text" value="Captain Hector Barbossa" />');
+	      $setupForm.append('<label for="num-ships">Number of Ships</label>');
+	      $setupForm.append('<input id="num-ships" type="text" value="20" />');
+	      $setupForm.append('<input class="submit-button" type="submit" value="Submit" />');
 	
 	      var self = this;
 	
-	      $names.submit(function (event) {
+	      $setupForm.submit(function (event) {
 	        event.preventDefault();
 	        self.game.setHumanName($("#human-name")[0].value);
 	        self.game.setComputerName($("#computer-name")[0].value);
+	        self.game.setNumShips(parseInt($("#num-ships")[0].value));
 	        self.removeForm();
 	        self.setupBoard();
 	        self.setupEvents();
@@ -180,7 +190,7 @@
 	  }, {
 	    key: 'removeForm',
 	    value: function removeForm() {
-	      $('.names').remove();
+	      $('.setup-form').remove();
 	    }
 	  }, {
 	    key: 'setupBoard',
@@ -252,7 +262,7 @@
 	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
 	      var $elements = $periodicTable.find('.element-square');
 	
-	      while (this.game.computerShipCount < 17) {
+	      while (this.game.computerShipCount < this.game.numShips) {
 	        var $randomElement = $elements.random();
 	        if (!$randomElement.hasClass('ship')) {
 	          $randomElement.addClass('ship');
@@ -276,7 +286,7 @@
 	      var game = this.game;
 	
 	      $elements.on('click', function (event) {
-	        if (game.humanShipCount < 17) {
+	        if (game.humanShipCount < game.numShips) {
 	          var $element = $(event.currentTarget);
 	          var elementSymbol = $element.data('sym');
 	
