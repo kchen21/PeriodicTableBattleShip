@@ -31,7 +31,6 @@ class BattleshipView {
   constructor(game, $el) {
     this.game = game;
     this.$el = $el;
-    this.computerShipLocations = [];
 
     this.toggleInstructions();
     this.setupForm();
@@ -127,12 +126,11 @@ class BattleshipView {
     const $periodicTable = $(`#periodic-table-${dashedComputerName}`);
     const $elements = $periodicTable.find('.element-square');
 
-    while (this.game.computerShipCount < this.game.numShips) {
+    while (this.game.computerShipCount() < this.game.numShips) {
       const $randomElement = $elements.random();
       if (!$randomElement.hasClass('ship')) {
         $randomElement.addClass('ship');
         this.computerShipLocations.push($randomElement.data('sym'));
-        this.game.computerShipCount += 1;
       }
     }
   }
@@ -193,7 +191,6 @@ class BattleshipView {
     const $selectedElementInfo = $(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
-    const computerShipLocations = this.computerShipLocations;
     const battle = this.battle.bind(this);
 
     $elements.on('click', (event) => {
@@ -210,10 +207,10 @@ class BattleshipView {
         $errors.empty();
         if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
-          remove($element.data('sym'), computerShipLocations);
-          game.computerShipCount -= 1;
+          remove($element.data('sym'), game.computerShipLocations);
         } else {
           $element.attr('style', 'background: red');
+          game.incrementHumanIncorrectGuessCount();
         }
 
         $selectedElementInfo.empty();
@@ -249,6 +246,7 @@ class BattleshipView {
           this.game.humanShipCount -= 1;
         } else {
           $randomElement.attr('style', 'background: red');
+          this.game.incrementComputerIncorrectGuessCount();
         }
 
         $selectedElementInfo.empty();
@@ -262,7 +260,7 @@ class BattleshipView {
   }
 
   battle() {
-    if (this.game.humanShipCount > 0 && this.game.computerShipCount > 0) {
+    if (this.game.humanShipCount > 0 && this.game.computerShipCount() > 0) {
       if (this.game.currentPlayer === "human") {
         this.targetComputerTableElement();
       } else if (this.game.currentPlayer === "computer") {
@@ -270,7 +268,7 @@ class BattleshipView {
       }
     } else if (this.game.humanShipCount === 0) {
       $('.messages').html(`<p>${this.game.getComputerName()} wins!</p>`);
-    } else if (this.game.computerShipCount === 0) {
+    } else if (this.game.computerShipCount() === 0) {
       $('.messages').html(`<p>${this.game.getHumanName()} wins!</p>`);
     }
   }

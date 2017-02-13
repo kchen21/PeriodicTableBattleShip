@@ -75,7 +75,7 @@
 	    this.computer = null;
 	    this.numShips = null;
 	    this.humanShipCount = 0;
-	    this.computerShipCount = 0;
+	    this.computerShipLocations = [];
 	    this.currentPlayer = "human";
 	  }
 	
@@ -107,6 +107,21 @@
 	    value: function getComputerName() {
 	      return this.computer.name;
 	    }
+	  }, {
+	    key: "computerShipCount",
+	    value: function computerShipCount() {
+	      return this.computerShipLocations.length;
+	    }
+	  }, {
+	    key: "incrementHumanIncorrectGuessCount",
+	    value: function incrementHumanIncorrectGuessCount() {
+	      this.human.consecutiveIncorrectGuesses += 1;
+	    }
+	  }, {
+	    key: "incrementComputerIncorrectGuessCount",
+	    value: function incrementComputerIncorrectGuessCount() {
+	      this.computer.consecutiveIncorrectGuesses += 1;
+	    }
 	  }]);
 	
 	  return Game;
@@ -126,6 +141,7 @@
 	  _classCallCheck(this, Player);
 	
 	  this.name = name;
+	  this.consecutiveIncorrectGuesses = 0;
 	};
 	
 	module.exports = Player;
@@ -165,7 +181,6 @@
 	
 	    this.game = game;
 	    this.$el = $el;
-	    this.computerShipLocations = [];
 	
 	    this.toggleInstructions();
 	    this.setupForm();
@@ -269,12 +284,11 @@
 	      var $periodicTable = $('#periodic-table-' + dashedComputerName);
 	      var $elements = $periodicTable.find('.element-square');
 	
-	      while (this.game.computerShipCount < this.game.numShips) {
+	      while (this.game.computerShipCount() < this.game.numShips) {
 	        var $randomElement = $elements.random();
 	        if (!$randomElement.hasClass('ship')) {
 	          $randomElement.addClass('ship');
 	          this.computerShipLocations.push($randomElement.data('sym'));
-	          this.game.computerShipCount += 1;
 	        }
 	      }
 	    }
@@ -340,7 +354,6 @@
 	      var $selectedElementInfo = $('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
-	      var computerShipLocations = this.computerShipLocations;
 	      var battle = this.battle.bind(this);
 	
 	      $elements.on('click', function (event) {
@@ -357,10 +370,10 @@
 	          $errors.empty();
 	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
-	            remove($element.data('sym'), computerShipLocations);
-	            game.computerShipCount -= 1;
+	            remove($element.data('sym'), game.computerShipLocations);
 	          } else {
 	            $element.attr('style', 'background: red');
+	            game.incrementHumanIncorrectGuessCount();
 	          }
 	
 	          $selectedElementInfo.empty();
@@ -397,6 +410,7 @@
 	            this.game.humanShipCount -= 1;
 	          } else {
 	            $randomElement.attr('style', 'background: red');
+	            this.game.incrementComputerIncorrectGuessCount();
 	          }
 	
 	          $selectedElementInfo.empty();
@@ -411,7 +425,7 @@
 	  }, {
 	    key: 'battle',
 	    value: function battle() {
-	      if (this.game.humanShipCount > 0 && this.game.computerShipCount > 0) {
+	      if (this.game.humanShipCount > 0 && this.game.computerShipCount() > 0) {
 	        if (this.game.currentPlayer === "human") {
 	          this.targetComputerTableElement();
 	        } else if (this.game.currentPlayer === "computer") {
@@ -419,7 +433,7 @@
 	        }
 	      } else if (this.game.humanShipCount === 0) {
 	        $('.messages').html('<p>' + this.game.getComputerName() + ' wins!</p>');
-	      } else if (this.game.computerShipCount === 0) {
+	      } else if (this.game.computerShipCount() === 0) {
 	        $('.messages').html('<p>' + this.game.getHumanName() + ' wins!</p>');
 	      }
 	    }

@@ -6,7 +6,7 @@ class Game {
     this.computer = null;
     this.numShips = null;
     this.humanShipCount = 0;
-    this.computerShipCount = 0;
+    this.computerShipLocations = [];
     this.currentPlayer = "human";
   }
 
@@ -31,6 +31,18 @@ class Game {
 
   getComputerName() {
     return this.computer.name;
+  }
+
+  computerShipCount() {
+    return this.computerShipLocations.length;
+  }
+
+  incrementHumanIncorrectGuessCount() {
+    this.human.consecutiveIncorrectGuesses += 1;
+  }
+
+  incrementComputerIncorrectGuessCount() {
+    this.computer.consecutiveIncorrectGuesses += 1;
   }
 }
 
