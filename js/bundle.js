@@ -226,24 +226,10 @@
 	      var dashedName = name.split(" ").join("-");
 	      this.$el.append('<div id="periodic-table-' + dashedName + '" class="periodic-table"></div>');
 	      var $periodicTable = this.$el.find('#periodic-table-' + dashedName);
-	      $periodicTable.append('<div class="column-0"></div>');
-	      $periodicTable.append('<div class="column-1"></div>');
-	      $periodicTable.append('<div class="column-2"></div>');
-	      $periodicTable.append('<div class="column-3"></div>');
-	      $periodicTable.append('<div class="column-4"></div>');
-	      $periodicTable.append('<div class="column-5"></div>');
-	      $periodicTable.append('<div class="column-6"></div>');
-	      $periodicTable.append('<div class="column-7"></div>');
-	      $periodicTable.append('<div class="column-8"></div>');
-	      $periodicTable.append('<div class="column-9"></div>');
-	      $periodicTable.append('<div class="column-10"></div>');
-	      $periodicTable.append('<div class="column-11"></div>');
-	      $periodicTable.append('<div class="column-12"></div>');
-	      $periodicTable.append('<div class="column-13"></div>');
-	      $periodicTable.append('<div class="column-14"></div>');
-	      $periodicTable.append('<div class="column-15"></div>');
-	      $periodicTable.append('<div class="column-16"></div>');
-	      $periodicTable.append('<div class="column-17"></div>');
+	
+	      for (var i = 0; i <= 17; i++) {
+	        $periodicTable.append('<div class="column-' + i + '"></div>');
+	      }
 	
 	      PERIODIC_TABLE_ELEMENTS.forEach(function (el, idx) {
 	        var $column = $periodicTable.find('.column-' + idx % 18);
