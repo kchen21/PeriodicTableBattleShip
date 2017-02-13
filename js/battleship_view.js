@@ -1,5 +1,15 @@
 const ElementInfo = require('./element_info.js');
 
+const remove = function(el, arr) {
+  const idx = arr.indexOf(el);
+
+  if (idx > -1) {
+    arr.splice(idx, 1);
+  }
+
+  return el;
+};
+
 $.fn.random = function() { // gets a random element from a selection returned by $(selector)
   return this.eq(Math.floor(Math.random() * this.length));
 };
@@ -183,6 +193,7 @@ class BattleshipView {
     const $selectedElementInfo = $(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
+    const computerShipLocations = this.computerShipLocations;
     const battle = this.battle.bind(this);
 
     $elements.on('click', (event) => {
@@ -199,6 +210,7 @@ class BattleshipView {
         $errors.empty();
         if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
+          remove($element.data('sym'), computerShipLocations);
           game.computerShipCount -= 1;
         } else {
           $element.attr('style', 'background: red');

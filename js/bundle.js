@@ -142,6 +142,16 @@
 	
 	var ElementInfo = __webpack_require__(4);
 	
+	var remove = function remove(el, arr) {
+	  var idx = arr.indexOf(el);
+	
+	  if (idx > -1) {
+	    arr.splice(idx, 1);
+	  }
+	
+	  return el;
+	};
+	
 	$.fn.random = function () {
 	  // gets a random element from a selection returned by $(selector)
 	  return this.eq(Math.floor(Math.random() * this.length));
@@ -330,6 +340,7 @@
 	      var $selectedElementInfo = $('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
+	      var computerShipLocations = this.computerShipLocations;
 	      var battle = this.battle.bind(this);
 	
 	      $elements.on('click', function (event) {
@@ -346,6 +357,7 @@
 	          $errors.empty();
 	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
+	            remove($element.data('sym'), computerShipLocations);
 	            game.computerShipCount -= 1;
 	          } else {
 	            $element.attr('style', 'background: red');
