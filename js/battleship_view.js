@@ -104,7 +104,7 @@ class BattleshipView {
       $column.append($element);
     });
 
-    this.$el.append(`<section class="select-messages-${dashedName}"></section>`)
+    this.$el.append(`<section class="select-messages-${dashedName}"></section>`);
     $(`.select-messages-${dashedName}`).append(`<p class="errors-${dashedName}"></p>`);
     $(`.select-messages-${dashedName}`).append(`<p class="selected-element-info-${dashedName}"></p>`);
   }
@@ -259,6 +259,28 @@ class BattleshipView {
     } else if (this.game.computerShipCount === 0) {
       $('.messages').html(`<p>${this.game.getHumanName()} wins!</p>`);
     }
+  }
+
+  hintMessage(elementInfo) {
+    const words = elementInfo.split(" ");
+    const capitalizedElementName = words[0];
+    const elementName = capitalizedElementName.toLowerCase();
+
+    const hintMessageWords = [];
+
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+
+      if (word === capitalizedElementName || word === elementName) {
+        hintMessageWords.push("-".repeat(word.length));
+      } else if (i === 1) {
+        hintMessageWords.push("(?)");
+      } else {
+        hintMessageWords.push(word);
+      }
+    }
+
+    return hintMessageWords.join(" ");
   }
 }
 

@@ -409,6 +409,29 @@
 	        $('.messages').html('<p>' + this.game.getHumanName() + ' wins!</p>');
 	      }
 	    }
+	  }, {
+	    key: 'hintMessage',
+	    value: function hintMessage(elementInfo) {
+	      var words = elementInfo.split(" ");
+	      var capitalizedElementName = words[0];
+	      var elementName = capitalizedElementName.toLowerCase();
+	
+	      var hintMessageWords = [];
+	
+	      for (var i = 0; i < words.length; i++) {
+	        var word = words[i];
+	
+	        if (word === capitalizedElementName || word === elementName) {
+	          hintMessageWords.push("-".repeat(word.length));
+	        } else if (i === 1) {
+	          hintMessageWords.push("(?)");
+	        } else {
+	          hintMessageWords.push(word);
+	        }
+	      }
+	
+	      return hintMessageWords.join(" ");
+	    }
 	  }]);
 	
 	  return BattleshipView;
