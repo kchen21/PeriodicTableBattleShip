@@ -155,6 +155,7 @@
 	
 	    this.game = game;
 	    this.$el = $el;
+	    this.computerShipLocations = [];
 	
 	    this.toggleInstructions();
 	    this.setupForm();
@@ -262,6 +263,7 @@
 	        var $randomElement = $elements.random();
 	        if (!$randomElement.hasClass('ship')) {
 	          $randomElement.addClass('ship');
+	          this.computerShipLocations.push($randomElement.data('sym'));
 	          this.game.computerShipCount += 1;
 	        }
 	      }

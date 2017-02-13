@@ -21,6 +21,7 @@ class BattleshipView {
   constructor(game, $el) {
     this.game = game;
     this.$el = $el;
+    this.computerShipLocations = [];
 
     this.toggleInstructions();
     this.setupForm();
@@ -120,6 +121,7 @@ class BattleshipView {
       const $randomElement = $elements.random();
       if (!$randomElement.hasClass('ship')) {
         $randomElement.addClass('ship');
+        this.computerShipLocations.push($randomElement.data('sym'));
         this.game.computerShipCount += 1;
       }
     }
