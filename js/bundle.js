@@ -147,7 +147,7 @@
 	  return this.eq(Math.floor(Math.random() * this.length));
 	};
 	
-	var PERIODIC_TABLE_ELEMENTS = ['H', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'He', 'Li', 'Be', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Mg', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Tc', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Re', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Cs', 'Ba', 'Lu', 'Hf', 'Ta', 'W', 'Re', 'Bh', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Uut', 'Fl', 'Uup', 'Lv', 'Uus', 'Uuo', '-', '-', '-', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', '-', '-', '-', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr'];
+	var PERIODIC_TABLE_ELEMENTS = ['H', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'He', 'Li', 'Be', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'B', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Mg', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Tc', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Re', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Cs', 'Ba', 'Lu', 'Hf', 'Ta', 'W', 'Re', 'Bh', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Nh', 'Fl', 'Mc', 'Lv', 'Ts', 'Og', '-', '-', '-', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', '-', '-', '-', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr'];
 	
 	var BattleshipView = function () {
 	  function BattleshipView(game, $el) {
@@ -534,13 +534,13 @@
 	  Mt: "Meitnerium (Mt) is a short-lived radioactive element that is artificially produced. It has an alternate name - Unnilennium (Une).",
 	  Ds: "Darmstadtium (Ds) is a synthetic element that decays in milliseconds. Due to its presence in Group 10, it is believed to likely be metallic and solid.",
 	  Rg: "Roentgenium (Rg) is a synthetic element whose only known isotope has a half-life of around 15 milliseconds before it decays into meitnerium. Due to its presence in Grop 11, it is a transition metal and, thus, probably metallic and solid.",
-	  Cn: "",
-	  Uut: "",
-	  Fl: "",
-	  Uup: "",
-	  Lv: "",
-	  Uus: "",
-	  Uuo: ""
+	  Cn: "Copernicium (Cn) is a synthetic element whose most stable known isotope, copernicium-285, has a half-life of approximately 29 seconds.",
+	  Nh: "Nihonium (Nh) is a synthetic element whose most stable known isotope, nihonium-286, has a half-life of 20 seconds.",
+	  Fl: "Flerovium (Fl) is a synthetic element discovered in Dubna, Russia in 1998. Its most stable known isotope, flerovium-289, has a half-life of around 2.6 seconds.",
+	  Mc: "Moscovium (Mc) is a synthetic element whose most stable known isotope, moscovium-290, has a half-life of only 0.8 seconds. About 100 atoms of moscovium have been observed to date, all of which have been shown to have mass numbers from 287 to 290.",
+	  Lv: "Livermorium (Lv) is a synthetic element. Four isotopes of livermorium are known, with mass numbers between 290 and 293 inclusive; the longest-lived among them is livermorium-293 with a half-life of about 60 milliseconds.",
+	  Ts: "Tennessine (Ts) is a synthetic element. Its discovery was announced in Dubna, Russia, by a Russian-American collaboration in 2010. Synthesized tennessine atoms have lasted tens and hundreds of milliseconds.",
+	  Og: "Oganesson (Og) is a synthetic element. It has the highest atomic number and atomic mass of all known elements. The radioactive oganesson atom is very unstable, and since 2005, only four atoms of the isotope oganesson-294 have been detected."
 	};
 
 /***/ }
