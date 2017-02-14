@@ -63,6 +63,10 @@ body > p {
 
 /*Instructions*/
 
+.instructions {
+  margin: 10px 0;
+}
+
 .instructions > label {
   font-weight: bold;
 }
