@@ -208,9 +208,10 @@ class BattleshipView {
         if ($element.hasClass('ship')) {
           $element.attr('style', 'background: green');
           remove($element.data('sym'), game.computerShipLocations);
+          game.resetHumanCIGuessCount();
         } else {
           $element.attr('style', 'background: red');
-          game.incrementHumanIncorrectGuessCount();
+          game.incrementHumanCIGuessCount();
         }
 
         $selectedElementInfo.empty();
@@ -246,7 +247,7 @@ class BattleshipView {
           this.game.humanShipCount -= 1;
         } else {
           $randomElement.attr('style', 'background: red');
-          this.game.incrementComputerIncorrectGuessCount();
+          this.game.incrementComputerCIGuessCount();
         }
 
         $selectedElementInfo.empty();
@@ -294,6 +295,15 @@ class BattleshipView {
 
     return hintMessageWords.join(" ");
   }
+
+  displayHint(elements) {
+    const randomElement = elements[Math.floor(Math.random() * elements.length)];
+    const elementInfo = ElementInfo[randomElement];
+
+    return this.hintMessage(elementInfo);
+  }
+
+
 }
 
 module.exports = BattleshipView;

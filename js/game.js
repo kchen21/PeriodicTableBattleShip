@@ -37,12 +37,16 @@ class Game {
     return this.computerShipLocations.length;
   }
 
-  incrementHumanIncorrectGuessCount() {
-    this.human.consecutiveIncorrectGuesses += 1;
+  incrementHumanCIGuessCount() {
+    this.human.consecutiveIncorrectGuessCount += 1;
   }
 
-  incrementComputerIncorrectGuessCount() {
-    this.computer.consecutiveIncorrectGuesses += 1;
+  incrementComputerCIGuessCount() {
+    this.computer.consecutiveIncorrectGuessCount += 1;
+  }
+
+  resetHumanCIGuessCount() {
+    this.human.consecutiveIncorrectGuessCount = 0;
   }
 }
 

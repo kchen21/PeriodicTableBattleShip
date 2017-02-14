@@ -1,7 +1,7 @@
 class Player {
   constructor(name) {
     this.name = name;
-    this.consecutiveIncorrectGuesses = 0;
+    this.consecutiveIncorrectGuessCount = 0;
   }
 }
 

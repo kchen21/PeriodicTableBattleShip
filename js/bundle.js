@@ -113,14 +113,19 @@
 	      return this.computerShipLocations.length;
 	    }
 	  }, {
-	    key: "incrementHumanIncorrectGuessCount",
-	    value: function incrementHumanIncorrectGuessCount() {
-	      this.human.consecutiveIncorrectGuesses += 1;
+	    key: "incrementHumanCIGuessCount",
+	    value: function incrementHumanCIGuessCount() {
+	      this.human.consecutiveIncorrectGuessCount += 1;
 	    }
 	  }, {
-	    key: "incrementComputerIncorrectGuessCount",
-	    value: function incrementComputerIncorrectGuessCount() {
-	      this.computer.consecutiveIncorrectGuesses += 1;
+	    key: "incrementComputerCIGuessCount",
+	    value: function incrementComputerCIGuessCount() {
+	      this.computer.consecutiveIncorrectGuessCount += 1;
+	    }
+	  }, {
+	    key: "resetHumanCIGuessCount",
+	    value: function resetHumanCIGuessCount() {
+	      this.human.consecutiveIncorrectGuessCount = 0;
 	    }
 	  }]);
 	
@@ -141,7 +146,7 @@
 	  _classCallCheck(this, Player);
 	
 	  this.name = name;
-	  this.consecutiveIncorrectGuesses = 0;
+	  this.consecutiveIncorrectGuessCount = 0;
 	};
 	
 	module.exports = Player;
@@ -371,9 +376,10 @@
 	          if ($element.hasClass('ship')) {
 	            $element.attr('style', 'background: green');
 	            remove($element.data('sym'), game.computerShipLocations);
+	            game.resetHumanCIGuessCount();
 	          } else {
 	            $element.attr('style', 'background: red');
-	            game.incrementHumanIncorrectGuessCount();
+	            game.incrementHumanCIGuessCount();
 	          }
 	
 	          $selectedElementInfo.empty();
@@ -410,7 +416,7 @@
 	            this.game.humanShipCount -= 1;
 	          } else {
 	            $randomElement.attr('style', 'background: red');
-	            this.game.incrementComputerIncorrectGuessCount();
+	            this.game.incrementComputerCIGuessCount();
 	          }
 	
 	          $selectedElementInfo.empty();
@@ -459,6 +465,14 @@
 	      }
 	
 	      return hintMessageWords.join(" ");
+	    }
+	  }, {
+	    key: 'displayHint',
+	    value: function displayHint(elements) {
+	      var randomElement = elements[Math.floor(Math.random() * elements.length)];
+	      var elementInfo = ElementInfo[randomElement];
+	
+	      return this.hintMessage(elementInfo);
 	    }
 	  }]);
 	
