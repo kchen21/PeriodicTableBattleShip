@@ -284,7 +284,7 @@ class BattleshipView {
   }
 
   hintMessage(elementInfo) {
-    const words = elementInfo.split(" ");
+    const words = elementInfo.split(/-| /);
     const capitalizedElementName = words[0];
     const elementName = capitalizedElementName.toLowerCase();
 

@@ -465,7 +465,7 @@
 	  }, {
 	    key: 'hintMessage',
 	    value: function hintMessage(elementInfo) {
-	      var words = elementInfo.split(" ");
+	      var words = elementInfo.split(/-| /);
 	      var capitalizedElementName = words[0];
 	      var elementName = capitalizedElementName.toLowerCase();
 	
