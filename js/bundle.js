@@ -304,7 +304,7 @@
 	        var $randomElement = $elements.random();
 	        if (!$randomElement.hasClass('ship')) {
 	          $randomElement.addClass('ship');
-	          this.computerShipLocations.push($randomElement.data('sym'));
+	          this.game.computerShipLocations.push($randomElement.data('sym'));
 	        }
 	      }
 	    }
