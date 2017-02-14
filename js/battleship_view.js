@@ -296,13 +296,12 @@ class BattleshipView {
     return hintMessageWords.join(" ");
   }
 
-  displayHint(elements) {
+  createHint(elements) {
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     const elementInfo = ElementInfo[randomElement];
 
     return this.hintMessage(elementInfo);
   }
-
 
 }
 

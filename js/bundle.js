@@ -467,8 +467,8 @@
 	      return hintMessageWords.join(" ");
 	    }
 	  }, {
-	    key: 'displayHint',
-	    value: function displayHint(elements) {
+	    key: 'createHint',
+	    value: function createHint(elements) {
 	      var randomElement = elements[Math.floor(Math.random() * elements.length)];
 	      var elementInfo = ElementInfo[randomElement];
 	
