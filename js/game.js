@@ -48,6 +48,14 @@ class Game {
   resetHumanCIGuessCount() {
     this.human.consecutiveIncorrectGuessCount = 0;
   }
+
+  resetComputerCIGuessCount() {
+    this.computer.consecutiveIncorrectGuessCount = 0;
+  }
+
+  humanCIGuessCount() {
+    return this.human.consecutiveIncorrectGuessCount;
+  }
 }
 
 module.exports = Game;

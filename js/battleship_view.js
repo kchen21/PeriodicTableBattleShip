@@ -117,6 +117,7 @@ class BattleshipView {
     this.$el.append(`<section class="select-messages-${dashedName}"></section>`);
     $(`.select-messages-${dashedName}`).append(`<p class="errors-${dashedName}"></p>`);
     $(`.select-messages-${dashedName}`).append(`<p class="selected-element-info-${dashedName}"></p>`);
+    this.$el.append(`<section class="ship-location-${dashedName}"></section>`);
   }
 
   generateComputerShips() {
@@ -191,6 +192,7 @@ class BattleshipView {
     const $selectedElementInfo = $(`.selected-element-info-${dashedComputerName}`);
 
     const game = this.game;
+    const renderHint = this.renderHint.bind(this);
     const battle = this.battle.bind(this);
 
     $elements.on('click', (event) => {
@@ -202,7 +204,7 @@ class BattleshipView {
 
       if (wasTargetted) {
         $selectedElementInfo.empty();
-        $errors.html('<section class="targetting-error">You must target an element that hasn\'t been targetted before.</section>')
+        $errors.html('<section class="targetting-error">You must target an element that hasn\'t been targetted before.</section>');
       } else {
         $errors.empty();
         if ($element.hasClass('ship')) {
@@ -215,7 +217,13 @@ class BattleshipView {
         }
 
         $selectedElementInfo.empty();
+        $(`.ship-location-${dashedComputerName}`).empty();
         $selectedElementInfo.html(`<section class="action">${humanName} launched a missile at ${elementSymbol}.</section> ${ElementInfo[elementSymbol]}`);
+
+        if (game.humanCIGuessCount() > 2) {
+          renderHint(dashedComputerName);
+        }
+
         $elements.off('click');
         game.currentPlayer = "computer";
         battle();
@@ -245,6 +253,7 @@ class BattleshipView {
         if ($randomElement.hasClass('ship')) {
           $randomElement.attr('style', 'background: green');
           this.game.humanShipCount -= 1;
+          this.game.resetComputerCIGuessCount();
         } else {
           $randomElement.attr('style', 'background: red');
           this.game.incrementComputerCIGuessCount();
@@ -301,6 +310,15 @@ class BattleshipView {
     const elementInfo = ElementInfo[randomElement];
 
     return this.hintMessage(elementInfo);
+  }
+
+  renderHint(dashedComputerName) {
+    const $hintSection = $(`.ship-location-${dashedComputerName}`);
+
+    $hintSection.html(
+      `<p>You've missed ${this.game.humanCIGuessCount()} times in a row so far! Here's a hint! One of ${this.game.getComputerName()}'s ships is located at the following element:</p>
+      <p>${this.createHint(this.game.computerShipLocations)}</p>`
+    );
   }
 
 }

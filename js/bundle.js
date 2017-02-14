@@ -127,6 +127,16 @@
 	    value: function resetHumanCIGuessCount() {
 	      this.human.consecutiveIncorrectGuessCount = 0;
 	    }
+	  }, {
+	    key: "resetComputerCIGuessCount",
+	    value: function resetComputerCIGuessCount() {
+	      this.computer.consecutiveIncorrectGuessCount = 0;
+	    }
+	  }, {
+	    key: "humanCIGuessCount",
+	    value: function humanCIGuessCount() {
+	      return this.human.consecutiveIncorrectGuessCount;
+	    }
 	  }]);
 	
 	  return Game;
@@ -279,6 +289,7 @@
 	      this.$el.append('<section class="select-messages-' + dashedName + '"></section>');
 	      $('.select-messages-' + dashedName).append('<p class="errors-' + dashedName + '"></p>');
 	      $('.select-messages-' + dashedName).append('<p class="selected-element-info-' + dashedName + '"></p>');
+	      this.$el.append('<section class="ship-location-' + dashedName + '"></section>');
 	    }
 	  }, {
 	    key: 'generateComputerShips',
@@ -359,6 +370,7 @@
 	      var $selectedElementInfo = $('.selected-element-info-' + dashedComputerName);
 	
 	      var game = this.game;
+	      var renderHint = this.renderHint.bind(this);
 	      var battle = this.battle.bind(this);
 	
 	      $elements.on('click', function (event) {
@@ -383,7 +395,13 @@
 	          }
 	
 	          $selectedElementInfo.empty();
+	          $('.ship-location-' + dashedComputerName).empty();
 	          $selectedElementInfo.html('<section class="action">' + humanName + ' launched a missile at ' + elementSymbol + '.</section> ' + ElementInfo[elementSymbol]);
+	
+	          if (game.humanCIGuessCount() > 2) {
+	            renderHint(dashedComputerName);
+	          }
+	
 	          $elements.off('click');
 	          game.currentPlayer = "computer";
 	          battle();
@@ -414,6 +432,7 @@
 	          if ($randomElement.hasClass('ship')) {
 	            $randomElement.attr('style', 'background: green');
 	            this.game.humanShipCount -= 1;
+	            this.game.resetComputerCIGuessCount();
 	          } else {
 	            $randomElement.attr('style', 'background: red');
 	            this.game.incrementComputerCIGuessCount();
@@ -473,6 +492,13 @@
 	      var elementInfo = ElementInfo[randomElement];
 	
 	      return this.hintMessage(elementInfo);
+	    }
+	  }, {
+	    key: 'renderHint',
+	    value: function renderHint(dashedComputerName) {
+	      var $hintSection = $('.ship-location-' + dashedComputerName);
+	
+	      $hintSection.html('<p>You\'ve missed ' + this.game.humanCIGuessCount() + ' times in a row so far! Here\'s a hint! One of ' + this.game.getComputerName() + '\'s ships is located at the following element:</p>\n      <p>' + this.createHint(this.game.computerShipLocations) + '</p>');
 	    }
 	  }]);
 	
